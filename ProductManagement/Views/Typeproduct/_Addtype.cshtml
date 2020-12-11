@@ -1,0 +1,63 @@
+﻿@model ProductManagement.Models.Type
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+    <link href="../assets/css/material-dashboard.css?v=2.1.2" rel="stylesheet" />
+    <link href="../assets/demo/demo.css" rel="stylesheet" />
+    <script src="~/assets/js/core/popper.min.js"></script>
+    <script src="~/assets/js/core/bootstrap-material-design.min.js"></script>
+    <script src="~/assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
+    <script src="~/assets/js/plugins/moment.min.js"></script>
+    <script src="~/assets/js/material-dashboard.js?v=2.1.2" type="text/javascript"></script>
+    <script src="~/assets/demo/demo.js"></script>
+    <meta name="viewport" content="width=device-width" />
+    <title>Add Client</title>
+</head>
+<body>
+    <div class="card">
+        <div class="card-header card-header-primary">
+            <h4 class="card-title">Gestion des types de produit</h4>
+            <p class="card-category" id="txtp">Ajout de type de produit</p>
+        </div>
+        <div class="card-body">
+            @using (Html.BeginForm("Save", "Typeproduct", FormMethod.Post))
+            {
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group  bmd-form-group">
+                            <label class="bmd-label-floating">Type de produit</label>
+                            @Html.HiddenFor(model => model.Id)
+                            @Html.TextBoxFor(model => model.Typep, new { @class = "form-control" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group  bmd-form-group">
+                            <label class="bmd-label-floating">Description</label>
+                            @Html.TextBoxFor(model => model.Description, new { @class = "form-control" })
+                        </div>
+                    </div>
+                </div>
+                <input type="submit" value="Enregistrer" class="btn btn-primary pull-right" />
+                <input type="reset" value="Annuler" class="btn btn-light pull-right" />
+            }
+        </div>
+    </div>
+
+</body>
+</html>
+@*<script>
+    $(document).ready(function () {
+        $('#example').DataTable(
+            {
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
+                }
+            }
+        );
+    });
+</script>*@
+

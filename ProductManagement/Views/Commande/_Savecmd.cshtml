@@ -1,0 +1,103 @@
+﻿@model Tuple<ProductManagement.Models.Commande, ProductManagement.Models.Product, ProductManagement.Models.Client>
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+    <link href="../assets/css/material-dashboard.css?v=2.1.2" rel="stylesheet" />
+    <link href="../assets/demo/demo.css" rel="stylesheet" />
+    <script src="~/assets/js/core/popper.min.js"></script>
+    <script src="~/assets/js/core/bootstrap-material-design.min.js"></script>
+    <script src="~/assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
+    <script src="~/assets/js/plugins/moment.min.js"></script>
+    <script src="~/assets/js/material-dashboard.js?v=2.1.2" type="text/javascript"></script>
+    <script src="~/assets/demo/demo.js"></script>
+    <meta name="viewport" content="width=device-width" />
+    <title>Add Client</title>
+</head>
+<body>
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="container">
+
+                </div>
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header card-header-primary">
+                            <h4 class="card-title">Gestion des commandes</h4>
+                            <p class="card-category" id="txtp">Ajout Commande</p>
+                        </div>
+                        <div class="card-body">
+                            @using (Html.BeginForm("Save", "Commande", FormMethod.Post))
+                            {
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group  bmd-form-group">
+                                            @Html.HiddenFor(model => model.Item1.Id)
+                                            @Html.DropDownListFor(model => model.Item1.Idclt, new SelectList(Model.Item3.List(), "id", "firstname"), "Select client", new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group  bmd-form-group">
+                                            @Html.DropDownListFor(model => model.Item1.Idpdt, new SelectList(Model.Item2.List(), "id", "name"), "Select produit", new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group  bmd-form-group is-focused">
+                                            <label class="bmd-label-floating">Quantité</label>
+                                            @Html.TextBoxFor(model => model.Item1.Qt, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                </div>
+                                if (Model.Item1.Id == 0)
+                                {
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="form-group  bmd-form-group is-focused">
+                                                <label class="bmd-label-floating">Date de commande</label>
+                                                @Html.TextBoxFor(m => m.Item1.Datec, new { @id = "datec", @class = "form-control datepicker datetimepicker-input", @type = "datetime-local" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="form-group  bmd-form-group is-focused">
+                                                <label class="bmd-label-floating" style="margin-left:87px">Date de commande</label>
+                                                @Html.TextBoxFor(m => m.Item1.Datec, new { @id = "datec", @class = "form-control"})
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+
+                                <input type="submit" value="Sauvegarder" class="btn btn-primary pull-right" />
+
+                            }
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
+@*<script>
+    $(document).ready(function () {
+        $('#example').DataTable(
+            {
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
+                }
+            }
+        );
+    });
+</script>*@

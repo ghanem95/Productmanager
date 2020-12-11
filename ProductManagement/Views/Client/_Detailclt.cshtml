@@ -1,0 +1,94 @@
+﻿@model ProductManagement.Models.Client
+
+<link href="../assets/demo/demo.css" rel="stylesheet" />
+<script src="~/assets/js/core/jquery.min.js"></script>
+<script src="~/assets/js/core/popper.min.js"></script>
+
+<script src="~/assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css">
+@*<script src="~/assets/js/plugins/arrive.min.js"></script>*@
+<link href="../assets/css/material-dashboard.css?v=2.1.2" rel="stylesheet" />
+<script src="~/assets/js/material-dashboard.js?v=2.1.2" type="text/javascript"></script>
+<script src="~/assets/js/core/bootstrap-material-design.min.js"></script>
+@using (Html.BeginForm("Save", "Client", FormMethod.Post))
+{
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group  bmd-form-group">
+                <label class="bmd-label-floating">Nom</label>
+                @Html.HiddenFor(model => model.Id)
+                @Html.TextBoxFor(model => model.Firstname, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group  bmd-form-group">
+                <label class="bmd-label-floating">Prénom</label>
+                @Html.TextBoxFor(model => model.Lastname, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group  bmd-form-group">
+                <label class="bmd-label-floating">Date de naissance</label>
+                @Html.TextBoxFor(model => model.Birthdate, new
+                {
+                    @class = "form-control"@*, @type = "datetime-local"*@})
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group  bmd-form-group">
+                <label class="bmd-label-floating">Adresse</label>
+                @Html.TextBoxFor(model => model.Adresse, new { @class = "form-control" })
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group  bmd-form-group">
+                <label class="bmd-label-floating">Cité</label>
+                @Html.TextBoxFor(model => model.Cite, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group  bmd-form-group">
+                <label class="bmd-label-floating">Pays</label>
+                @Html.TextBoxFor(model => model.Countrie, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group  bmd-form-group">
+                <label class="bmd-label-floating">Code postal</label>
+                @Html.TextBoxFor(model => model.Codep, new { @class = "form-control" })
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group  bmd-form-group">
+                <label class="bmd-label-floating">Email</label>
+                @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group  bmd-form-group">
+                <label class="bmd-label-floating">Numéro de téléphone</label>
+                @Html.TextBoxFor(model => model.Tel, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group  bmd-form-group">
+                <label class="bmd-label-floating">Profession</label>
+                @Html.TextBoxFor(model => model.Prof, new { @class = "form-control" })
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+        <input type="submit" value="Enregistrer" class="btn btn-primary" />
+    </div>
+
+
+}

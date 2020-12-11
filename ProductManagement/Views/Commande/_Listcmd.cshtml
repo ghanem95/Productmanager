@@ -1,0 +1,113 @@
+﻿@model Tuple<ProductManagement.Models.Commande, ProductManagement.Models.Product, ProductManagement.Models.Client>
+<h4 style="margin-left:250px;color:red">@ViewBag.msg</h4>
+<div class="col-md-12">
+    <div class="card">
+        <div class="card-header card-header-primary">
+            <h4 class="card-title">Gestion des commandes</h4>
+            <p class="card-category">Liste des commandes</p>
+        </div>
+        <div class="card-body">
+            <table id="example" class="table table-striped table-bordered" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Produit</th>
+                        <th>Quantité</th>
+                        <th>Date de commande</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var cmd in ViewBag.ListCmd)
+                    {
+                        if (cmd.Datec > DateTime.Now)
+                        {
+                            <tr>
+                                <td>@cmd.Nameclt</td>
+                                <td>@cmd.Namepdt</td>
+                                <td>@cmd.Qt</td>
+                                <td>@cmd.Datec</td>
+                                <td >
+                                    <a id="modif" href="#" @*data-toggle="modal" data-target="#modaldetail"*@ onclick="Detail(@cmd.Id)">Modifier</a> | <a id="delete" onclick="Delete(@cmd.Id)" href="#">Supprimer</a>
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr>
+                                <td>@cmd.Nameclt</td>
+                                <td>@cmd.Namepdt</td>
+                                <td>@cmd.Qt</td>
+                                <td>@cmd.Datec</td>
+                                <td>
+                                   <a id="delete" onclick="Delete(@cmd.Id)" href="#">Supprimer</a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+                    @*<tfoot>
+                <tr>
+                    <th>Name</th>
+                    <th>Age</th>
+                    <th>Adresse</th>
+                </tr>
+            </tfoot>*@
+                </table>
+
+        </div>
+    </div>
+</div>
+<script>
+    function Delete(id) {
+        $.ajax({
+            url: '/Commande/DeleteCmd',
+            data: { "id": id },
+            contentType: 'application/html; charset=utf-8',
+            type: 'GET',
+            dataType: 'html',
+            success: function (result) {
+
+                $('#Listcmd').html(result);
+                //$('#example').DataTable(
+                //    {
+                //        "language": {
+                //            "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
+                //        }
+                //    }
+                //);
+            },
+            error: function (result) {
+                alert('fail');
+            }
+        })
+    }
+    function Detail(id) {
+        $.ajax({
+            url: '/Commande/DetailCmd',
+            data: { "id": id },
+            contentType: 'application/html; charset=utf-8',
+            type: 'GET',
+            dataType: 'html',
+            success: function (result) {
+                $('#Savecmd').html(result);
+                $('#txtp').text('Modification de commande');
+            },
+            error: function (result) {
+                alert('fail');
+            }
+        })
+    }
+</script>
+<script>
+    $(document).ready(function () {
+        $('#example').DataTable(
+            {
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
+                }
+            }
+        );
+    });
+</script>

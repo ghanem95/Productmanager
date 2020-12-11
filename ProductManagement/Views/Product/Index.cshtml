@@ -1,0 +1,63 @@
+﻿@model Tuple<ProductManagement.Models.Product, ProductManagement.Models.Type>
+<!DOCTYPE html>
+<html>
+<head>
+
+    <link href="../assets/css/material-dashboard.css?v=2.1.2" rel="stylesheet" />
+    <link href="../assets/demo/demo.css" rel="stylesheet" />
+    <script src="~/assets/js/core/popper.min.js"></script>
+    <script src="~/assets/js/core/bootstrap-material-design.min.js"></script>
+    <script src="~/assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
+    <script src="~/assets/js/plugins/moment.min.js"></script>
+    <script src="~/assets/js/material-dashboard.js?v=2.1.2" type="text/javascript"></script>
+    <script src="~/assets/js/core/jquery.min.js"></script>
+    <script src="~/assets/demo/demo.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css">
+
+
+    <meta name="viewport" content="width=device-width" />
+    <title>Add Client</title>
+</head>
+<body>
+    <div class="content">
+        <div class="container-fluid">
+            <div class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12" id="Listpdt">
+                            @{
+                                Html.RenderPartial("_Listpdt");
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade bd-example-modal-lg" id="modaldetail" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modification produit</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="detailpdt">
+                    @{
+                        Html.RenderPartial("_Detailpdt");
+                    }
+                </div>
+
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<script>
+    $(document).ready(function () {
+        $(".nav-item").removeClass("active");
+        $("#linkp").addClass("active");
+    });
+</script>

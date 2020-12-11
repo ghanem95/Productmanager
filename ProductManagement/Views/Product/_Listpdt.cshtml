@@ -1,0 +1,109 @@
+﻿@model Tuple<ProductManagement.Models.Product, ProductManagement.Models.Type>
+<h4 style="margin-left:350px;color:red">@ViewBag.msg</h4>
+<div class="card">
+
+    <div class="card-header card-header-primary">
+        @*<h4 class="card-title">Gestion des clients</h4>*@
+        <p class="card-category">Liste de produit</p>
+    </div>
+    <div class="card-body">
+        <table id="example" class="table table-striped table-bordered" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Référence</th>
+                    <th>Nom</th>
+                    <th>Description</th>
+                    <th>Date de fabrication</th>
+                    <th>Type</th>
+                    <th>Prix</th>
+                    <th>Quantité</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var pdt in ViewBag.Listpdt)
+                {
+                    <tr>
+                        <td>@pdt.Id</td>
+                        <td>@pdt.Reference</td>
+                        <td>@pdt.Name</td>
+                        <td>@pdt.Desc</td>
+                        <td>@pdt.Datefab</td>
+                        <td>@pdt.Desctype</td>
+                        <td>@pdt.Price</td>
+                        <td>@pdt.Qt</td>
+                        <td>
+                            <a id="modif" href="#" @*data-toggle="modal" data-target="#modaldetail"*@ onclick="Detail(@pdt.Id)">Modifier</a> | <a id="delete" @*data-toggle="modal" data-target="#msg"*@ onclick="Delete(@pdt.Id)" href="#">Supprimer</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+            @*<tfoot>
+                    <tr>
+                        <th>Name</th>
+                        <th>Age</th>
+                        <th>Adresse</th>
+                    </tr>
+                </tfoot>*@
+        </table>
+
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#example').DataTable(
+            {
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
+                }
+            }
+        );
+    });
+</script>
+<script>
+    function Delete(id) {
+        $.ajax({
+            url: '/Product/Deletepdt',
+            data: { "id": id },
+            contentType: 'application/html; charset=utf-8',
+            type: 'GET',
+            dataType: 'html',
+            success: function (result) {
+
+                $('#Listpdt').html(result);
+                $("#msg").modal('show');
+                //$('#example').DataTable(
+                //    {
+                //        "language": {
+                //            "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
+                //        }
+                //    }
+                //);
+            },
+            error: function (result) {
+                alert('Tu ne peux pas supprimer ce produit');
+            }
+        })
+    }
+    function Detail(id) {
+        $.ajax({
+            url: '/Product/Detailpdt',
+            data: { "id": id },
+            contentType: 'application/html; charset=utf-8',
+            type: 'GET',
+            dataType: 'html',
+            success: function (result) {
+                $('#detailpdt').html(result);
+                $('#modaldetail').modal('show');
+            },
+            error: function (result) {
+                //$('#detailpdt').html(result);
+                alert('fail');
+            }
+        })
+    }
+</script>
+
