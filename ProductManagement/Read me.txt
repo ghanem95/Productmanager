@@ -1,0 +1,3 @@
+﻿1) Lancer le fichier Script_creation.sql qui se trouve dans le dossier Script_creation dans sql server.
+
+2) Changer la chaine de connexion dans le fichier Web.config (le data source).
