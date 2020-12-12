@@ -43,20 +43,15 @@
             <div class="sidebar-wrapper">
                 <ul class="nav">
                     <li class="nav-item" id="linkd">
-                        <a class="nav-link"  href="/Home/Index">
+                        <a class="nav-link" href="/Home/Index">
                             <i class="material-icons">dashboard</i>
                             <p>Dashboard</p>
                         </a>
                     </li>
-                    <li class="nav-item" id="linkc">
-                        <a class="nav-link" data-toggle="collapse"  id="colc" data-target=".multi-collapse" aria-expanded="false" aria-controls="addclt listclt" @*href="/client/index"*@>
-                            <i class="material-icons">person</i>
-                            <p>Gestion des Clients</p>
-                        </a>
-                    </li>
+                   
                     <li class="collapse multi-collapse" style="padding-left: 27px;" id="addtclt">
                         <a class="nav-link" href="/client/index">
-                            <i class="material-icons">groups</i>
+                            <i class="material-icons">person</i>
                             <p style="font-size: 12px;">Liste des Clients</p>
                         </a>
 
@@ -71,33 +66,28 @@
                     <!-- your sidebar here -->
                 </ul>
                 <ul class="nav">
+                    <li class="nav-item" id="linkc">
+                        <a class="nav-link" href="/client/index">
+                            <i class="material-icons">person</i>
+                            <p>Gestion des client</p>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="nav">
                     <li class="nav-item" id="linkp">
-                        <a class="nav-link" data-toggle="collapse" id="colp" data-target=".multi-collapses" data-parent="#accordion" aria-expanded="false" aria-controls="listpdt addpdt" @*href="/client/index"*@>
+                        <a class="nav-link" href="/Product/index">
                             <i class="material-icons">store</i>
                             <p>Gestion des Produits</p>
                         </a>
                     </li>
-                    <li class="collapse multi-collapses" style="padding-left: 27px;" id="listpdt">
-                        <a class="nav-link" href="/Product/index">
-                            <i class="material-icons">shopping_cart</i>
-                            <p style="font-size: 12px;">Liste des produits</p>
-                        </a>
-
-                    </li>
-                    <li class="collapse multi-collapses" style="padding-left: 27px;" id="addpdt">
-                        <a class="nav-link" href="/Product/Addproduct">
-                            <i class="material-icons">shop</i>
-                            <p style="font-size: 12px;">Ajout produit</p>
-                        </a>
-                    </li>
-
-                    <li class="collapse multi-collapses" style="padding-left: 27px;">
-                        <a class="nav-link" @*data-toggle="collapse" data-target=".multi-collapse" aria-expanded="false" aria-controls="addclt listclt"*@ href="/Typeproduct/index">
+                </ul>
+                <ul class="nav">
+                    <li class="nav-item" id="linktype">
+                        <a class="nav-link" href="/Typeproduct/index">
                             <i class="material-icons">build</i>
-                            <p style="font-size: 12px;">type produit</p>
+                            <p>Type produit</p>
                         </a>
                     </li>
-                    <!-- your sidebar here -->
                 </ul>
                 <ul class="nav">
                     <li class="nav-item" id="linkco">
@@ -208,13 +198,13 @@
             <li class="button-container">
                 <a href="https://www.creative-tim.com/product/material-dashboard" target="_blank" class="btn btn-primary btn-block">Free Download</a>
             </li>-->
-            <!-- <li class="header-title">Want more components?</li>
-                <li class="button-container">
-                    <a href="https://www.creative-tim.com/product/material-dashboard-pro" target="_blank" class="btn btn-warning btn-block">
-                      Get the pro version
-                    </a>
-                </li> -->
-            <!--<li class="button-container">
+<!-- <li class="header-title">Want more components?</li>
+    <li class="button-container">
+        <a href="https://www.creative-tim.com/product/material-dashboard-pro" target="_blank" class="btn btn-warning btn-block">
+          Get the pro version
+        </a>
+    </li> -->
+<!--<li class="button-container">
                 <a href="https://demos.creative-tim.com/material-dashboard/docs/2.1/getting-started/introduction.html" target="_blank" class="btn btn-default btn-block">
                     View Documentation
                 </a>

@@ -194,7 +194,6 @@
     <Content Include="Read me.txt" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="connectionstrings.config" />
     <Content Include="assets\css\material-dashboard.css.map" />
     <Content Include="assets\js\material-dashboard.js.map" />
     <Content Include="assets\scss\material-dashboard.scss" />

@@ -28,7 +28,7 @@
                                 <td>@cmd.Namepdt</td>
                                 <td>@cmd.Qt</td>
                                 <td>@cmd.Datec</td>
-                                <td >
+                                <td>
                                     <a id="modif" href="#" @*data-toggle="modal" data-target="#modaldetail"*@ onclick="Detail(@cmd.Id)">Modifier</a> | <a id="delete" onclick="Delete(@cmd.Id)" href="#">Supprimer</a>
                                 </td>
                             </tr>
@@ -41,47 +41,43 @@
                                 <td>@cmd.Qt</td>
                                 <td>@cmd.Datec</td>
                                 <td>
-                                   <a id="delete" onclick="Delete(@cmd.Id)" href="#">Supprimer</a>
+                                    <a id="delete" onclick="Delete(@cmd.Id)" href="#">Supprimer</a>
                                 </td>
                             </tr>
                         }
                     }
                 </tbody>
-                    @*<tfoot>
-                <tr>
-                    <th>Name</th>
-                    <th>Age</th>
-                    <th>Adresse</th>
-                </tr>
-            </tfoot>*@
-                </table>
+                @*<tfoot>
+                        <tr>
+                            <th>Name</th>
+                            <th>Age</th>
+                            <th>Adresse</th>
+                        </tr>
+                    </tfoot>*@
+            </table>
 
         </div>
     </div>
 </div>
 <script>
     function Delete(id) {
-        $.ajax({
-            url: '/Commande/DeleteCmd',
-            data: { "id": id },
-            contentType: 'application/html; charset=utf-8',
-            type: 'GET',
-            dataType: 'html',
-            success: function (result) {
-
-                $('#Listcmd').html(result);
-                //$('#example').DataTable(
-                //    {
-                //        "language": {
-                //            "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
-                //        }
-                //    }
-                //);
-            },
-            error: function (result) {
-                alert('fail');
-            }
-        })
+        $("#confirm").modal('show');
+        $("#btnconfirm").click(function () {
+            $.ajax({
+                url: '/Commande/DeleteCmd',
+                data: { "id": id },
+                contentType: 'application/html; charset=utf-8',
+                type: 'GET',
+                dataType: 'html',
+                success: function (result) {
+                    $('#Listcmd').html(result);
+                    $("#confirm").modal('hide');
+                },
+                error: function (result) {
+                    alert('fail');
+                }
+            })
+        });
     }
     function Detail(id) {
         $.ajax({
