@@ -80,7 +80,7 @@ namespace ProductManagement.Models
             SqlCommand cmd = connect.CreateCommand();
             cmd.CommandText = "Execute addtype @type, @description";
             cmd.Parameters.Add("@type", SqlDbType.NVarChar, 50).Value = this.Typep;
-            cmd.Parameters.Add("@description", SqlDbType.NVarChar, 50).Value = this.Description;
+            cmd.Parameters.Add("@description", SqlDbType.NVarChar, 50).Value = this.Description.isNull(string.Empty);
             connect.Open();
             cmd.ExecuteNonQuery();
             connect.Close();

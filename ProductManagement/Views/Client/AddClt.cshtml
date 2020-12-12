@@ -12,8 +12,10 @@
     <script src="~/assets/js/plugins/moment.min.js"></script>
     <script src="~/assets/js/material-dashboard.js?v=2.1.2" type="text/javascript"></script>
     <script src="~/assets/demo/demo.js"></script>
+    <link href="~/Content/required.css" rel="stylesheet" />
     <meta name="viewport" content="width=device-width" />
     <title>Add Client</title>
+
 </head>
 <body>
     <div class="content">
@@ -34,14 +36,15 @@
                                 <div class="row">
                                     <div class="col-md-4">
                                         <div class="form-group  bmd-form-group">
-                                            <label class="bmd-label-floating">Nom</label>
-                                            @Html.TextBoxFor(model => model.Firstname, new { @class = "form-control" })
+                                            <label class="bmd-label-floating required">Nom</label>
+                                            @Html.TextBoxFor(model => model.Firstname, new {@id="fn", @class = "form-control", required = "required",@type="text" })
+                                            @Html.ValidationMessageFor(m => m.Firstname, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group  bmd-form-group">
-                                            <label class="bmd-label-floating">Prénom</label>
-                                            @Html.TextBoxFor(model => model.Lastname, new { @class = "form-control" })
+                                            <label class="bmd-label-floating required">Prénom</label>
+                                            @Html.TextBoxFor(model => model.Lastname, new { @id = "ln", @class = "form-control", required = "required" })
                                         </div>
                                     </div>
                                     <div class="col-sm-4">
@@ -55,28 +58,28 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group  bmd-form-group">
-                                            <label class="bmd-label-floating">Adresse</label>
-                                            @Html.TextBoxFor(model => model.Adresse, new { @class = "form-control" })
+                                            <label class="bmd-label-floating required">Adresse</label>
+                                            @Html.TextBoxFor(model => model.Adresse, new { @class = "form-control", required = "required" })
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-4">
                                         <div class="form-group  bmd-form-group">
-                                            <label class="bmd-label-floating">Cité</label>
-                                            @Html.TextBoxFor(model => model.Cite, new { @class = "form-control" })
+                                            <label class="bmd-label-floating required">Cité</label>
+                                            @Html.TextBoxFor(model => model.Cite, new { @class = "form-control",required="required" })
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group  bmd-form-group">
-                                            <label class="bmd-label-floating">Pays</label>
-                                            @Html.TextBoxFor(model => model.Countrie, new { @class = "form-control" })
+                                            <label class="bmd-label-floating required">Pays</label>
+                                            @Html.TextBoxFor(model => model.Countrie, new { @class = "form-control", required = "required" })
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group  bmd-form-group">
-                                            <label class="bmd-label-floating">Code postal</label>
-                                            @Html.TextBoxFor(model => model.Codep, new { @class = "form-control" })
+                                            <label class="bmd-label-floating required">Code postal</label>
+                                            @Html.TextBoxFor(model => model.Codep, new {@id="codep", @class = "form-control", required = "required" })
                                         </div>
                                     </div>
                                 </div>
@@ -84,19 +87,19 @@
                                     <div class="col-md-4">
                                         <div class="form-group  bmd-form-group">
                                             <label class="bmd-label-floating">Email</label>
-                                            @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
+                                            @Html.TextBoxFor(model => model.Email, new { @class = "form-control", type = "email", required = "required" })
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group  bmd-form-group">
                                             <label class="bmd-label-floating">Numéro de téléphone</label>
-                                            @Html.TextBoxFor(model => model.Tel, new { @class = "form-control" })
+                                            @Html.TextBoxFor(model => model.Tel, new {@id="tel", @class = "form-control" })
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group  bmd-form-group">
                                             <label class="bmd-label-floating">Profession</label>
-                                            @Html.TextBoxFor(model => model.Prof, new { @class = "form-control" })
+                                            @Html.TextBoxFor(model => model.Prof, new {@id="prof", @class = "form-control" })
                                         </div>
                                     </div>
                                 </div>
@@ -125,4 +128,25 @@
             }
         );
     });
+ 
+    $("#fn,#ln,#prof").keydown(function (e) {
+        if ($.isNumeric(e.key))
+            return false;
+
+        return true;
+        });
+    $("#tel").keydown(function (e) {
+        if ($(this).val().length < 10 && $.isNumeric(e.key) || e.keyCode == 46 || e.keyCode == 8 || e.keyCode == 37 || e.keyCode == 39)
+            return true;
+
+        return false;
+    });
+    $("#codep").keydown(function (e) {
+        if ($(this).val().length < 4 && $.isNumeric(e.key) || e.keyCode == 46 || e.keyCode == 8 || e.keyCode == 37 || e.keyCode == 39)
+            return true;
+
+        return false;
+    });
+    
+  
 </script>

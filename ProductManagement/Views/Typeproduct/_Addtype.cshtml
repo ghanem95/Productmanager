@@ -26,10 +26,10 @@
             {
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="form-group  bmd-form-group">
-                            <label class="bmd-label-floating">Type de produit</label>
+                        <div class="form-group  bmd-form-group ">
+                            <label class="bmd-label-floating required">Type de produit</label>
                             @Html.HiddenFor(model => model.Id)
-                            @Html.TextBoxFor(model => model.Typep, new { @class = "form-control" })
+                            @Html.TextBoxFor(model => model.Typep, new { @class = "form-control",required="required" })
                         </div>
                     </div>
                 </div>

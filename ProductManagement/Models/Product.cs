@@ -33,23 +33,28 @@ namespace ProductManagement.Models
 
         public override void Add()
         {
-
+            try
+            {
             SqlConnection connect = new SqlConnection(Connectionstrings.Connectionstring());
             SqlCommand cmd = connect.CreateCommand();
             cmd.CommandText = "Execute addproduct @ref,@name,@description,@datefab,@type,@price,@qt,@available";
             cmd.Parameters.Add("@ref", SqlDbType.NVarChar, 50).Value = this.Reference;
             cmd.Parameters.Add("@name", SqlDbType.NVarChar, 50).Value = this.Name;
-            cmd.Parameters.Add("@description", SqlDbType.NVarChar).Value = this.Desc;
+            cmd.Parameters.Add("@description", SqlDbType.NVarChar).Value = this.Desc.isNull(string.Empty);
             cmd.Parameters.Add("@datefab", SqlDbType.Date).Value = this.Datefab;
             cmd.Parameters.Add("@type", SqlDbType.Int).Value = this.Type;
             cmd.Parameters.Add("@price", SqlDbType.Float, 50).Value = this.Price;
             cmd.Parameters.Add("@qt", SqlDbType.Int).Value = this.Qt;
             cmd.Parameters.Add("@available", SqlDbType.Decimal).Value = Convert.ToDecimal(this.Available);
-
-
             connect.Open();
             cmd.ExecuteNonQuery();
             connect.Close();
+            }
+            catch(Exception ex)
+            {
+
+            }
+           
         }
         public int countpdt()
         {

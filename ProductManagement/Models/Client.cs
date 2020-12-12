@@ -63,7 +63,7 @@ namespace ProductManagement.Models
             cmd.Parameters.Add("@codep", SqlDbType.Int, 50).Value = this.Codep;
             cmd.Parameters.Add("@email", SqlDbType.NVarChar, 50).Value = this.Email;
             cmd.Parameters.Add("@tel", SqlDbType.Int, 50).Value = this.Tel;
-            cmd.Parameters.Add("@prof", SqlDbType.NVarChar, 50).Value = this.Prof;
+            cmd.Parameters.Add("@prof", SqlDbType.NVarChar).Value = this.Prof.isNull("");
 
 
             connect.Open();
