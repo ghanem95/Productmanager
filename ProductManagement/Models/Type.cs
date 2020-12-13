@@ -50,7 +50,7 @@ namespace ProductManagement.Models
                 }
                 catch (Exception ex)
                 {
-
+                    ex.StackTrace.Replace(Environment.NewLine, ex.ToString());
                 }
             }
 
@@ -76,32 +76,48 @@ namespace ProductManagement.Models
         }
         public override void Add()
         {
-            SqlConnection connect = new SqlConnection(Connectionstrings.Connectionstring());
-            SqlCommand cmd = connect.CreateCommand();
-            cmd.CommandText = "Execute addtype @type, @description";
-            cmd.Parameters.Add("@type", SqlDbType.NVarChar, 50).Value = this.Typep;
-            cmd.Parameters.Add("@description", SqlDbType.NVarChar, 50).Value = this.Description.isNull(string.Empty);
-            connect.Open();
-            cmd.ExecuteNonQuery();
-            connect.Close();
+            try
+            {
+                SqlConnection connect = new SqlConnection(Connectionstrings.Connectionstring());
+                SqlCommand cmd = connect.CreateCommand();
+                cmd.CommandText = "Execute addtype @type, @description";
+                cmd.Parameters.Add("@type", SqlDbType.NVarChar, 50).Value = this.Typep;
+                cmd.Parameters.Add("@description", SqlDbType.NVarChar, 50).Value = this.Description.isNull(string.Empty);
+                connect.Open();
+                cmd.ExecuteNonQuery();
+                connect.Close();
+            }
+            catch (Exception ex)
+            {
+                ex.StackTrace.Replace(Environment.NewLine, ex.ToString());
+            }
+
         }
 
         public override void Affiche(int id)
         {
-            using (SqlConnection con = new SqlConnection(Connectionstrings.Connectionstring()))
+            try
             {
-                string sqlquery = "select * from typeproduct where id=" + id;
-                SqlCommand cmd = new SqlCommand(sqlquery, con);
-                con.Open();
-                SqlDataReader read = cmd.ExecuteReader();
-                while (read.Read())
+                using (SqlConnection con = new SqlConnection(Connectionstrings.Connectionstring()))
                 {
-                    this.Id = Convert.ToInt32(read["id"]);
-                    this.Typep = read["type"].ToString();
-                    this.Description = read["description"].ToString();
+                    string sqlquery = "select * from typeproduct where id=" + id;
+                    SqlCommand cmd = new SqlCommand(sqlquery, con);
+                    con.Open();
+                    SqlDataReader read = cmd.ExecuteReader();
+                    while (read.Read())
+                    {
+                        this.Id = Convert.ToInt32(read["id"]);
+                        this.Typep = read["type"].ToString();
+                        this.Description = read["description"].ToString();
+                    }
+                    con.Close();
                 }
-                con.Close();
             }
+            catch (Exception ex)
+            {
+                ex.StackTrace.Replace(Environment.NewLine, ex.ToString());
+            }
+
         }
 
         public override string Delete(int id)
@@ -128,16 +144,24 @@ namespace ProductManagement.Models
 
         public override void Update()
         {
-            using (SqlConnection con = new SqlConnection(Connectionstrings.Connectionstring()))
+            try
             {
-                string sqlquery = "update typeproduct set Type='" + this.Typep +
-                    "', Description = '" + this.Description + "'" +
-                    " where id =" + this.Id;
-                SqlCommand cmd = new SqlCommand(sqlquery, con);
-                con.Open();
-                cmd.ExecuteNonQuery();
-                con.Close();
+                using (SqlConnection con = new SqlConnection(Connectionstrings.Connectionstring()))
+                {
+                    string sqlquery = "update typeproduct set Type='" + this.Typep +
+                        "', Description = '" + this.Description + "'" +
+                        " where id =" + this.Id;
+                    SqlCommand cmd = new SqlCommand(sqlquery, con);
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                    con.Close();
+                }
             }
+            catch (Exception ex)
+            {
+                ex.StackTrace.Replace(Environment.NewLine, ex.ToString());
+            }
+
         }
     }
 }

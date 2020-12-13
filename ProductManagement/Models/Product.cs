@@ -35,26 +35,26 @@ namespace ProductManagement.Models
         {
             try
             {
-            SqlConnection connect = new SqlConnection(Connectionstrings.Connectionstring());
-            SqlCommand cmd = connect.CreateCommand();
-            cmd.CommandText = "Execute addproduct @ref,@name,@description,@datefab,@type,@price,@qt,@available";
-            cmd.Parameters.Add("@ref", SqlDbType.NVarChar, 50).Value = this.Reference;
-            cmd.Parameters.Add("@name", SqlDbType.NVarChar, 50).Value = this.Name;
-            cmd.Parameters.Add("@description", SqlDbType.NVarChar).Value = this.Desc.isNull(string.Empty);
-            cmd.Parameters.Add("@datefab", SqlDbType.Date).Value = this.Datefab;
-            cmd.Parameters.Add("@type", SqlDbType.Int).Value = this.Type;
-            cmd.Parameters.Add("@price", SqlDbType.Float, 50).Value = this.Price;
-            cmd.Parameters.Add("@qt", SqlDbType.Int).Value = this.Qt;
-            cmd.Parameters.Add("@available", SqlDbType.Decimal).Value = Convert.ToDecimal(this.Available);
-            connect.Open();
-            cmd.ExecuteNonQuery();
-            connect.Close();
+                SqlConnection connect = new SqlConnection(Connectionstrings.Connectionstring());
+                SqlCommand cmd = connect.CreateCommand();
+                cmd.CommandText = "Execute addproduct @ref,@name,@description,@datefab,@type,@price,@qt,@available";
+                cmd.Parameters.Add("@ref", SqlDbType.NVarChar, 50).Value = this.Reference;
+                cmd.Parameters.Add("@name", SqlDbType.NVarChar, 50).Value = this.Name;
+                cmd.Parameters.Add("@description", SqlDbType.NVarChar).Value = this.Desc.isNull(string.Empty);
+                cmd.Parameters.Add("@datefab", SqlDbType.Date).Value = this.Datefab;
+                cmd.Parameters.Add("@type", SqlDbType.Int).Value = this.Type;
+                cmd.Parameters.Add("@price", SqlDbType.Float, 50).Value = this.Price;
+                cmd.Parameters.Add("@qt", SqlDbType.Int).Value = this.Qt;
+                cmd.Parameters.Add("@available", SqlDbType.Decimal).Value = Convert.ToDecimal(this.Available);
+                connect.Open();
+                cmd.ExecuteNonQuery();
+                connect.Close();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-
+                ex.StackTrace.Replace(Environment.NewLine, ex.ToString());
             }
-           
+
         }
         public int countpdt()
         {
@@ -107,7 +107,7 @@ namespace ProductManagement.Models
                 }
                 catch (Exception ex)
                 {
-
+                    ex.StackTrace.Replace(Environment.NewLine, ex.ToString());
                 }
             }
 
@@ -115,30 +115,38 @@ namespace ProductManagement.Models
         }
         public override void Affiche(int id)
         {
-            using (SqlConnection con = new SqlConnection(Connectionstrings.Connectionstring()))
+            try
             {
-                string sqlquery = "select * from Product where id=" + id;
-                SqlCommand cmd = new SqlCommand(sqlquery, con);
-                con.Open();
-                SqlDataReader read = cmd.ExecuteReader();
-                while (read.Read())
+                using (SqlConnection con = new SqlConnection(Connectionstrings.Connectionstring()))
                 {
+                    string sqlquery = "select * from Product where id=" + id;
+                    SqlCommand cmd = new SqlCommand(sqlquery, con);
+                    con.Open();
+                    SqlDataReader read = cmd.ExecuteReader();
+                    while (read.Read())
+                    {
 
-                    this.Id = Convert.ToInt32(read["id"]);
-                    this.Reference = read["ref"].ToString();
-                    this.Name = read["name"].ToString();
-                    this.Desc = read["description"].ToString();
-                    this.Datefab = Convert.ToDateTime(read["datefab"]);
-                    this.Type = Convert.ToInt32(read["type"]);
-                    this.Price = Convert.ToInt32(read["price"]);
-                    this.Qt = Convert.ToInt32(read["qt"]);
-                    this.Available = Convert.ToBoolean(read["available"]);
+                        this.Id = Convert.ToInt32(read["id"]);
+                        this.Reference = read["ref"].ToString();
+                        this.Name = read["name"].ToString();
+                        this.Desc = read["description"].ToString();
+                        this.Datefab = Convert.ToDateTime(read["datefab"]);
+                        this.Type = Convert.ToInt32(read["type"]);
+                        this.Price = Convert.ToInt32(read["price"]);
+                        this.Qt = Convert.ToInt32(read["qt"]);
+                        this.Available = Convert.ToBoolean(read["available"]);
+                    }
+                    con.Close();
                 }
-                con.Close();
             }
+            catch (Exception ex)
+            {
+                ex.StackTrace.Replace(Environment.NewLine, ex.ToString());
+            }
+
         }
 
-       
+
         public override string Delete(int id)
         {
             string msg = "";
@@ -152,7 +160,7 @@ namespace ProductManagement.Models
                     cmd.ExecuteNonQuery();
                     con.Close();
                     msg = "Produit supprimé";
-                       
+
                 }
             }
             catch (Exception ex)
@@ -164,22 +172,30 @@ namespace ProductManagement.Models
         }
         public override void Update()
         {
-            using (SqlConnection con = new SqlConnection(Connectionstrings.Connectionstring()))
+            try
             {
-                string sqlquery = "update Product set Ref='" + this.Reference +
-                    "', Name = '" + this.Name + "'" +
-                    ", Description ='" + this.Desc + "'" +
-                    ", datefab ='" + this.Datefab + "'" +
-                    ", Type ='" + this.Type + "'" +
-                    ", Price ='" + this.Price + "'" +
-                    ", Qt ='" + this.Qt + "'" +
-                    ", Available ='" + Convert.ToDecimal(this.Available) + "'" +
-                    " where id =" + this.Id;
-                SqlCommand cmd = new SqlCommand(sqlquery, con);
-                con.Open();
-                cmd.ExecuteNonQuery();
-                con.Close();
+                using (SqlConnection con = new SqlConnection(Connectionstrings.Connectionstring()))
+                {
+                    string sqlquery = "update Product set Ref='" + this.Reference +
+                        "', Name = '" + this.Name + "'" +
+                        ", Description ='" + this.Desc + "'" +
+                        ", datefab ='" + this.Datefab + "'" +
+                        ", Type ='" + this.Type + "'" +
+                        ", Price ='" + this.Price + "'" +
+                        ", Qt ='" + this.Qt + "'" +
+                        ", Available ='" + Convert.ToDecimal(this.Available) + "'" +
+                        " where id =" + this.Id;
+                    SqlCommand cmd = new SqlCommand(sqlquery, con);
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                    con.Close();
+                }
             }
+            catch (Exception ex)
+            {
+                ex.StackTrace.Replace(Environment.NewLine, ex.ToString());
+            }
+
         }
     }
 }

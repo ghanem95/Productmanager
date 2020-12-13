@@ -32,28 +32,7 @@
                     <th>Action</th>
                 </tr>
             </thead>
-            <tbody>
-
-                @foreach (var clt in ViewBag.ListClient)
-                {
-                    <tr>
-                        <td>@clt.Id</td>
-                        <td>@clt.Firstname</td>
-                        <td>@clt.Lastname</td>
-                        <td>@clt.Birthdate</td>
-                        <td>@clt.Adresse</td>
-                        @*<td>@clt.Cite</td>
-                            <td>@clt.Countrie</td>*@
-                        <td>@clt.Codep</td>
-                        <td>@clt.Email</td>
-                        <td>@clt.Tel</td>
-                        <td>@clt.Prof</td>
-                        <td>
-                            <a id="modif" href="#" onclick="Detail(@clt.Id)">Modifier</a> | <a id="delete" onclick="Delete(@clt.Id)" href="#">Supprimer</a>
-                        </td>
-                    </tr>
-                }
-            </tbody>
+            
         </table>
 
     </div>
@@ -71,13 +50,47 @@
                 success: function (result) {
 
                     $('#Listclt').html(result);
-                    $('#example').DataTable(
-                        {
-                            "language": {
-                                "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
-                            }
+                     $('#example').DataTable(
+            {
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
+                },
+                processing: true,
+                serverSide: true,
+                searchable: true,
+                  ajax: {
+                url: '@Url.Action("GetClients")',
+                type: 'POST',
+                dataSrc: 'data',
+            },
+                columns: [
+                    { data: "Id" },
+                    { data: "Firstname" },
+                    { data: "Lastname" },
+                    {
+                        data: "Birthdate", mRender: function (data) {
+                            var pattern = /Date\(([^)]+)\)/;
+                            var results = pattern.exec(data);
+                            var dt = new Date(parseFloat(results[1]));
+                            return (dt.getMonth() + 1) + "-" + dt.getDate() + "-" + dt.getFullYear();
                         }
-                    );
+                    },
+                    { data: "Adresse" },
+                    { data: "Codep" },
+                    { data: "Email" },
+                    { data: "Tel" },
+                    { data: "Prof" },
+                    {
+                        data: "Id",
+                        mRender: function (data, type, full) {
+                            return '<a id="modif" href="#" onclick="Detail('+data+')">Modifier</a>  |  '
+                                +  '<a id="modif" href="#" onclick="Delete(' + data + ')">Delete</a>'
+                        }}
+                     
+                ]
+
+            }
+        );
                     $("#confirm").modal('hide');
                 },
                 error: function (result) {

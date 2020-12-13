@@ -12,6 +12,7 @@
     <script src="~/assets/js/plugins/moment.min.js"></script>
     <script src="~/assets/js/material-dashboard.js?v=2.1.2" type="text/javascript"></script>
     <script src="~/assets/demo/demo.js"></script>
+    <link href="~/Content/required.css" rel="stylesheet" />
     <meta name="viewport" content="width=device-width" />
     <title>Add Client</title>
 </head>
@@ -35,22 +36,22 @@
                                     <div class="col-md-12">
                                         <div class="form-group  bmd-form-group">
                                             @Html.HiddenFor(model => model.Item1.Id)
-                                            @Html.DropDownListFor(model => model.Item1.Idclt, new SelectList(Model.Item3.List(), "id", "firstname"), "Select client", new { @class = "form-control" })
+                                            @Html.DropDownListFor(model => model.Item1.Idclt, new SelectList(Model.Item3.List(), "id", "firstname"), "Select client *", new { @class = "form-control",@required="required" })
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group  bmd-form-group">
-                                            @Html.DropDownListFor(model => model.Item1.Idpdt, new SelectList(Model.Item2.List(), "id", "name"), "Select produit", new { @class = "form-control" })
+                                            @Html.DropDownListFor(model => model.Item1.Idpdt, new SelectList(Model.Item2.List(), "id", "name"), "Select produit *", new { @class = "form-control", @required = "required" })
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <div class="form-group  bmd-form-group is-focused">
-                                            <label class="bmd-label-floating">Quantité</label>
-                                            @Html.TextBoxFor(model => model.Item1.Qt, new { @class = "form-control" })
+                                        <div class="form-group  bmd-form-group is-focused ">
+                                            <label class="bmd-label-floating required">Quantité</label>
+                                            @Html.TextBoxFor(model => model.Item1.Qt, new { @class = "form-control", @required = "required" })
                                         </div>
                                     </div>
                                 </div>
@@ -58,9 +59,9 @@
                                 {
                                     <div class="row">
                                         <div class="col-sm-12">
-                                            <div class="form-group  bmd-form-group is-focused">
-                                                <label class="bmd-label-floating">Date de commande</label>
-                                                @Html.TextBoxFor(m => m.Item1.Datec, new { @id = "datec", @class = "form-control datepicker datetimepicker-input", @type = "datetime-local" })
+                                            <div class="form-group  bmd-form-group is-focused ">
+                                                <label class="bmd-label-floating required">Date de commande</label>
+                                                @Html.TextBoxFor(m => m.Item1.Datec, new { @id = "datec", @class = "form-control datepicker datetimepicker-input", @type = "datetime-local", @required = "required" })
                                             </div>
                                         </div>
                                     </div>
@@ -69,9 +70,9 @@
                                 {
                                     <div class="row">
                                         <div class="col-sm-12">
-                                            <div class="form-group  bmd-form-group is-focused">
-                                                <label class="bmd-label-floating" style="margin-left:87px">Date de commande</label>
-                                                @Html.TextBoxFor(m => m.Item1.Datec, new { @id = "datec", @class = "form-control"})
+                                            <div class="form-group  bmd-form-group is-focused ">
+                                                <label class="bmd-label-floating required" style="margin-left:87px">Date de commande</label>
+                                                @Html.TextBoxFor(m => m.Item1.Datec, new { @id = "datec", @class = "form-control", @required = "required" })
                                             </div>
                                         </div>
                                     </div>

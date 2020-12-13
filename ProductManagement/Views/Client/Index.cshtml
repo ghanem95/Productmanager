@@ -22,14 +22,14 @@
 <body>
     <div class="content">
         <div class="container-fluid">
-            <div class="row" >
+            <div class="row">
                 <div class="col-md-12" id="Listclt">
                     @{
                         Html.RenderPartial("_Listclt");
                     }
                 </div>
             </div>
-            </div>
+        </div>
     </div>
     <div class="modal fade bd-example-modal-sm" id="confirm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm">
@@ -76,9 +76,62 @@
             {
                 "language": {
                     "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
-                }
+                },
+                processing: true,
+                serverSide: true,
+                searchable: true,
+                  ajax: {
+                url: '@Url.Action("GetClients")',
+                type: 'POST',
+                dataSrc: 'data',
+            },
+                columns: [
+                    { data: "Id" },
+                    { data: "Firstname" },
+                    { data: "Lastname" },
+                    {
+                        data: "Birthdate", mRender: function (data) {
+                            var pattern = /Date\(([^)]+)\)/;
+                            var results = pattern.exec(data);
+                            var dt = new Date(parseFloat(results[1]));
+                            var day;
+                            var mounth;
+                            if (dt.getDate() < 10) {
+                                day = "0" + dt.getDate();
+                            }
+                            else {
+                                day = dt.getDate();
+                            }
+                            if (dt.getMonth() < 10) {
+                                mounth = "0" + dt.getMonth();
+                            }
+                            else {
+                                mounth = dt.getMonth();
+                            }
+                            return (day) + "/" + (mounth) + "/" + dt.getFullYear();
+                        }
+                    },
+                    { data: "Adresse" },
+                    { data: "Codep" },
+                    { data: "Email" },
+                    { data: "Tel" },
+                    { data: "Prof" },
+                    {
+                        data: "Id",
+                        mRender: function (data, type, full) {
+                            return '<a id="modif" href="#" onclick="Detail('+ data +')">Modifier</a>  |  '
+                                +  '<a id="modif" href="#" onclick="Delete(' + data + ')">Delete</a>'
+                        }}
+                     
+                ]
+
             }
         );
     });
-
+    function convertToJavaScriptDate(value) {
+        var pattern = /Date\(([^)]+)\)/;
+        var results = pattern.exec(value);
+        var dt = new Date(parseFloat(results[1]));
+        return (dt.getMonth() + 1) + "/" + dt.getDate() + "/" + dt.getFullYear();
+    }
 </script>

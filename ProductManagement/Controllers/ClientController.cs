@@ -1,10 +1,12 @@
 ﻿using ProductManagement.Models;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Globalization;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 
@@ -52,7 +54,7 @@ namespace ProductManagement.Controllers
         public PartialViewResult DeleteClt(int idclt)
         {
             Client client = new Client();
-            ViewBag.msg= client.Delete(idclt);
+            ViewBag.msg = client.Delete(idclt);
             ViewBag.ListClient = client.List();
             return PartialView("_Listclt");
         }
@@ -87,6 +89,17 @@ namespace ProductManagement.Controllers
             }
 
             return RedirectToAction("Index");
+        }
+
+        public JsonResult GetClients(int length, int start)
+        {
+            IList<Client> clients;
+            Client client = new Client();
+            string searchVal = HttpContext.Request.Form["search[value]"];
+            clients = client.ListDatatable(length,start,searchVal);
+            int nbclt = client.countclt();
+            var response = new { data = clients, recordsFiltered = nbclt, recordsTotal = nbclt };
+            return Json(response, JsonRequestBehavior.AllowGet);
         }
     }
 }

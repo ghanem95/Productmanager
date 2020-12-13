@@ -11,65 +11,68 @@
 <link href="../assets/css/material-dashboard.css?v=2.1.2" rel="stylesheet" />
 <script src="~/assets/js/material-dashboard.js?v=2.1.2" type="text/javascript"></script>
 <script src="~/assets/js/core/bootstrap-material-design.min.js"></script>
+<link href="~/Content/required.css" rel="stylesheet" />
 @using (Html.BeginForm("Save", "Product", FormMethod.Post))
 {
     <div class="row">
         <div class="col-md-4">
             <div class="form-group  bmd-form-group">
-                <label class="bmd-label-floating">Référence</label>
-                @Html.HiddenFor(model => model.Item1.Id)
-                @Html.TextBoxFor(model => model.Item1.Reference, new { @class = "form-control" })
+                <label class="bmd-label-floating required">Réference</label>
+                @Html.TextBoxFor(model => model.Item1.Reference, new { @class = "form-control", @required = "required" })
             </div>
         </div>
         <div class="col-md-4">
             <div class="form-group  bmd-form-group">
-                <label class="bmd-label-floating">Nom</label>
-                @Html.TextBoxFor(model => model.Item1.Name, new { @class = "form-control" })
+                <label class="bmd-label-floating required">Nom</label>
+                @Html.TextBoxFor(model => model.Item1.Name, new { @class = "form-control", @required = "required" })
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="form-group  bmd-form-group">
-                <label class="bmd-label-floating">Date de fabrication</label>
-                @Html.TextBoxFor(model => model.Item1.Datefab, new { @class = "form-control" })
-        
+        <div class="col-sm-4">
+            <div class="form-group  bmd-form-group ">
+                <label class="bmd-label-floating required" style="margin-left:87px">Date de fabrication</label>
+                @Html.TextBoxFor(m => m.Item1.Datefab, new { @class = "form-control datepicker datetimepicker-input", @required = "required" })
+
             </div>
         </div>
     </div>
-
     <div class="row">
         <div class="col-md-12">
             <div class="form-group  bmd-form-group">
                 <label class="bmd-label-floating">Description</label>
-                @Html.TextBoxFor(model => model.Item1.Desc, new
-                {
-                    @class = "form-control"@*, @type = "datetime-local"*@})
+                @Html.TextBoxFor(model => model.Item1.Desc, new { @class = "form-control" })
             </div>
         </div>
     </div>
     <div class="row">
+        <div class="col-md-4" style="margin-top: -5px;">
+            <div class="form-group  bmd-form-group">
+                @*<label class="bmd-label-floating">Cité</label>*@
+                @Html.DropDownListFor(model => model.Item1.Type, new SelectList(Model.Item2.List(), "id", "typep"), "Select Type", new { @class = "form-control required", @required = "required" })
+            </div>
+        </div>
         <div class="col-md-4">
             <div class="form-group  bmd-form-group">
-                @Html.DropDownListFor(model => model.Item1.Type, new SelectList(Model.Item2.List(), "id", "typep"), "Select Type", new { @class = "form-control" })
+                <label class="bmd-label-floating required">Prix</label>
+                @Html.TextBoxFor(model => model.Item1.Price, new { @id = "price", @class = "form-control", @type = "number", @required = "required" })
             </div>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-4">
             <div class="form-group  bmd-form-group">
-                <label class="bmd-label-floating">Prix</label>
-                @Html.TextBoxFor(model => model.Item1.Price, new { @class = "form-control" })
+                <label class="bmd-label-floating required">Quantité</label>
+                @Html.TextBoxFor(model => model.Item1.Qt, new { @id = "qt", @class = "form-control", @type = "number", @required = "required" })
             </div>
         </div>
-        <div class="col-md-2">
-            <div class="form-group  bmd-form-group">
-                <label class="bmd-label-floating">Quantité</label>
-                @Html.TextBoxFor(model => model.Item1.Qt, new { @class = "form-control" })
-            </div>
-        </div>  
-    
     </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-        <input type="submit" value="Enregistrer" class="btn btn-primary" />
-    </div>
-
+    @*<div class="row">
+                                         <div class="col-md-4">
+                                             <div class="form-group  bmd-form-group">
+                                                 @Html.DropDownListFor(model => model.Item1.Available, new List<SelectListItem>
+        {
+          new SelectListItem { Text = "Oui", Value = "true"},
+          new SelectListItem { Text = "Non", Value = "false"} }, "Disponible", new { @class = "form-control" })
+                                             </div>
+                                         </div>
+                                     </div>*@
+    <input type="submit" value="Enregistrer" class="btn btn-primary pull-right" />
 
 }

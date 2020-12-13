@@ -31,17 +31,24 @@ namespace ProductManagement.Models
         }
         public override void Add()
         {
+            try
+            {
+                SqlConnection connect = new SqlConnection(Connectionstrings.Connectionstring());
+                SqlCommand cmd = connect.CreateCommand();
+                cmd.CommandText = "Execute addcommande @idpdt,@idclt,@qt,@datec";
+                cmd.Parameters.Add("@idpdt", SqlDbType.NVarChar, 50).Value = this.Idpdt;
+                cmd.Parameters.Add("@idclt", SqlDbType.NVarChar, 50).Value = this.Idclt;
+                cmd.Parameters.Add("@qt", SqlDbType.NVarChar).Value = this.Qt;
+                cmd.Parameters.Add("@datec", SqlDbType.Date).Value = this.Datec;
+                connect.Open();
+                cmd.ExecuteNonQuery();
+                connect.Close();
+            }
+            catch (Exception ex)
+            {
+                ex.StackTrace.Replace(Environment.NewLine, ex.ToString());
+            }
 
-            SqlConnection connect = new SqlConnection(Connectionstrings.Connectionstring());
-            SqlCommand cmd = connect.CreateCommand();
-            cmd.CommandText = "Execute addcommande @idpdt,@idclt,@qt,@datec";
-            cmd.Parameters.Add("@idpdt", SqlDbType.NVarChar, 50).Value = this.Idpdt;
-            cmd.Parameters.Add("@idclt", SqlDbType.NVarChar, 50).Value = this.Idclt;
-            cmd.Parameters.Add("@qt", SqlDbType.NVarChar).Value = this.Qt;
-            cmd.Parameters.Add("@datec", SqlDbType.Date).Value = this.Datec;
-            connect.Open();
-            cmd.ExecuteNonQuery();
-            connect.Close();
         }
 
         public IList<Commande> List()
@@ -75,7 +82,7 @@ namespace ProductManagement.Models
                 }
                 catch (Exception ex)
                 {
-
+                    ex.StackTrace.Replace(Environment.NewLine, ex.ToString());
                 }
             }
 
@@ -83,22 +90,30 @@ namespace ProductManagement.Models
         }
         public override void Affiche(int id)
         {
-            using (SqlConnection con = new SqlConnection(Connectionstrings.Connectionstring()))
+            try
             {
-                string sqlquery = "select * from Commande where id=" + id;
-                SqlCommand cmd = new SqlCommand(sqlquery, con);
-                con.Open();
-                SqlDataReader read = cmd.ExecuteReader();
-                while (read.Read())
+                using (SqlConnection con = new SqlConnection(Connectionstrings.Connectionstring()))
                 {
-                    this.Id = Convert.ToInt32(read["id"]);
-                    this.Idclt = Convert.ToInt32(read["idclt"]);
-                    this.Idpdt = Convert.ToInt32(read["idpdt"]);
-                    this.Qt = Convert.ToInt32(read["qt"]);
-                    this.Datec = Convert.ToDateTime(read["datec"]);
+                    string sqlquery = "select * from Commande where id=" + id;
+                    SqlCommand cmd = new SqlCommand(sqlquery, con);
+                    con.Open();
+                    SqlDataReader read = cmd.ExecuteReader();
+                    while (read.Read())
+                    {
+                        this.Id = Convert.ToInt32(read["id"]);
+                        this.Idclt = Convert.ToInt32(read["idclt"]);
+                        this.Idpdt = Convert.ToInt32(read["idpdt"]);
+                        this.Qt = Convert.ToInt32(read["qt"]);
+                        this.Datec = Convert.ToDateTime(read["datec"]);
+                    }
+                    con.Close();
                 }
-                con.Close();
             }
+            catch (Exception ex)
+            {
+                ex.StackTrace.Replace(Environment.NewLine, ex.ToString());
+            }
+
         }
         public int countcmd()
         {
@@ -145,18 +160,26 @@ namespace ProductManagement.Models
 
         public override void Update()
         {
-            using (SqlConnection con = new SqlConnection(Connectionstrings.Connectionstring()))
+            try
             {
-                string sqlquery = "update Commande set idclt='" + this.Idclt +
-                    "', idpdt = '" + this.Idpdt + "'" +
-                    ", Qt ='" + this.Qt + "'" +
-                    ", Datec ='" + this.Datec + "'" +
-                    " where id =" + this.Id;
-                SqlCommand cmd = new SqlCommand(sqlquery, con);
-                con.Open();
-                cmd.ExecuteNonQuery();
-                con.Close();
+                using (SqlConnection con = new SqlConnection(Connectionstrings.Connectionstring()))
+                {
+                    string sqlquery = "update Commande set idclt='" + this.Idclt +
+                        "', idpdt = '" + this.Idpdt + "'" +
+                        ", Qt ='" + this.Qt + "'" +
+                        ", Datec ='" + this.Datec + "'" +
+                        " where id =" + this.Id;
+                    SqlCommand cmd = new SqlCommand(sqlquery, con);
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                    con.Close();
+                }
             }
+            catch (Exception ex)
+            {
+                ex.StackTrace.Replace(Environment.NewLine, ex.ToString());
+            }
+
         }
     }
 }

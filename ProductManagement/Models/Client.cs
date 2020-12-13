@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Text;
 using System.Web;
 
 namespace ProductManagement.Models
@@ -49,29 +50,91 @@ namespace ProductManagement.Models
             this.Prof = string.Empty;
 
         }
+        public IList<Client> ListDatatable(int length, int start, string searchVal)
+        {
+            List<Client> clients = new List<Client>();
+            using (SqlConnection conn = new SqlConnection(Connectionstrings.Connectionstring()))
+            {
+                try
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand();
+                    StringBuilder sbSQL = new StringBuilder();
+                    sbSQL.AppendFormat("select top({0}) * from (select clt.*, row_number() over(order by [Id] asc) as [row_number] " +
+                        "from Customer clt) clt", length);
+                    sbSQL.AppendFormat(" where row_number >{0}", start);
+
+                    if (!string.IsNullOrEmpty(searchVal))
+                    {
+                        sbSQL.AppendFormat(" and Firstname like '%{0}%' or Lastname like '%{0}%' or FORMAT(birthdate, 'dd/MM/yyyy ') " +
+                            "like '%{0}%' " +
+                            "or Adresse like '%{0}%' or Cite like '%{0}%' or Countrie like '%{0}%' or Codep like '%{0}%'" +
+                            " or Email like '%{0}%' or Tel like '%{0}%' or Prof like '%{0}%'", searchVal);
+                    }
+                    cmd.CommandText = sbSQL.ToString();
+                    cmd.Connection = conn;
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        clients.Add(new Client()
+                        {
+                            Id = Convert.ToInt32(reader["Id"]),
+                            Firstname = reader["Firstname"].ToString(),
+                            Lastname = reader["Lastname"].ToString(),
+                            Birthdate =Convert.ToDateTime(reader["Birthdate"]),
+                            Adresse = reader["Adresse"].ToString(),
+                            Cite = reader["Cite"].ToString(),
+                            Countrie = reader["countrie"].ToString(),
+                            Codep = Convert.ToInt32(reader["Codep"]),
+                            Email = reader["Email"].ToString(),
+                            Tel = Convert.ToInt32(reader["Tel"]),
+                            Prof = reader["Prof"].ToString(),
+                        }); ;
+                    }
+                    reader.Close();
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+
+                }
+            }
+
+
+            return clients;
+        }
         public override void Add()
         {
-            SqlConnection connect = new SqlConnection(Connectionstrings.Connectionstring());
-            SqlCommand cmd = connect.CreateCommand();
-            cmd.CommandText = "Execute addcustomer @firstname,@lastname,@birthdate,@adresse,@cite,@countrie,@codep,@email,@tel,@prof";
-            cmd.Parameters.Add("@firstname", SqlDbType.NVarChar, 50).Value = this.Firstname;
-            cmd.Parameters.Add("@lastname", SqlDbType.NVarChar, 50).Value = this.Lastname;
-            cmd.Parameters.Add("@birthdate", SqlDbType.Date).Value = this.Birthdate;
-            cmd.Parameters.Add("@adresse", SqlDbType.NVarChar, 50).Value = this.Adresse;
-            cmd.Parameters.Add("@cite", SqlDbType.NVarChar, 50).Value = this.Cite;
-            cmd.Parameters.Add("@countrie", SqlDbType.NVarChar, 50).Value = this.Countrie;
-            cmd.Parameters.Add("@codep", SqlDbType.Int, 50).Value = this.Codep;
-            cmd.Parameters.Add("@email", SqlDbType.NVarChar, 50).Value = this.Email;
-            cmd.Parameters.Add("@tel", SqlDbType.Int, 50).Value = this.Tel;
-            cmd.Parameters.Add("@prof", SqlDbType.NVarChar).Value = this.Prof.isNull("");
+            try
+            {
+                SqlConnection connect = new SqlConnection(Connectionstrings.Connectionstring());
+                SqlCommand cmd = connect.CreateCommand();
+                cmd.CommandText = "Execute addcustomer @firstname,@lastname,@birthdate,@adresse,@cite,@countrie,@codep,@email,@tel,@prof";
+                cmd.Parameters.Add("@firstname", SqlDbType.NVarChar, 50).Value = this.Firstname;
+                cmd.Parameters.Add("@lastname", SqlDbType.NVarChar, 50).Value = this.Lastname;
+                cmd.Parameters.Add("@birthdate", SqlDbType.Date).Value = this.Birthdate;
+                cmd.Parameters.Add("@adresse", SqlDbType.NVarChar, 50).Value = this.Adresse;
+                cmd.Parameters.Add("@cite", SqlDbType.NVarChar, 50).Value = this.Cite;
+                cmd.Parameters.Add("@countrie", SqlDbType.NVarChar, 50).Value = this.Countrie;
+                cmd.Parameters.Add("@codep", SqlDbType.Int, 50).Value = this.Codep;
+                cmd.Parameters.Add("@email", SqlDbType.NVarChar, 50).Value = this.Email;
+                cmd.Parameters.Add("@tel", SqlDbType.Int, 50).Value = this.Tel;
+                cmd.Parameters.Add("@prof", SqlDbType.NVarChar).Value = this.Prof.isNull("");
+                connect.Open();
+                cmd.ExecuteNonQuery();
+                connect.Close();
+            }
+            catch (Exception ex)
+            {
+                ex.StackTrace.Replace(Environment.NewLine, ex.ToString());
+            }
 
-
-            connect.Open();
-            cmd.ExecuteNonQuery();
-            connect.Close();
         }
+       
 
-        public IList<Client> List()
+            public IList<Client> List()
         {
 
             List<Client> Listclient = new List<Client>();
@@ -104,7 +167,7 @@ namespace ProductManagement.Models
                 }
                 catch (Exception ex)
                 {
-
+                    ex.StackTrace.Replace(Environment.NewLine, ex.ToString());
                 }
             }
 
@@ -112,28 +175,36 @@ namespace ProductManagement.Models
         }
         public override void Affiche(int id)
         {
-            using (SqlConnection con = new SqlConnection(Connectionstrings.Connectionstring()))
+            try
             {
-                string sqlquery = "select * from Customer where id=" + id;
-                SqlCommand cmd = new SqlCommand(sqlquery, con);
-                con.Open();
-                SqlDataReader read = cmd.ExecuteReader();
-                while (read.Read())
+                using (SqlConnection con = new SqlConnection(Connectionstrings.Connectionstring()))
                 {
-                    this.Id = Convert.ToInt32(read["id"]);
-                    this.Firstname = read["firstname"].ToString();
-                    this.Lastname = read["lastname"].ToString();
-                    this.Birthdate = Convert.ToDateTime(read["birthdate"]);
-                    this.Adresse = read["adresse"].ToString();
-                    this.Codep = Convert.ToInt32(read["codep"]);
-                    this.Cite = read["cite"].ToString();
-                    this.Countrie = read["countrie"].ToString();
-                    this.Email = read["email"].ToString();
-                    this.Prof = read["prof"].ToString();
-                    this.Tel = Convert.ToInt32(read["tel"]);
+                    string sqlquery = "select * from Customer where id=" + id;
+                    SqlCommand cmd = new SqlCommand(sqlquery, con);
+                    con.Open();
+                    SqlDataReader read = cmd.ExecuteReader();
+                    while (read.Read())
+                    {
+                        this.Id = Convert.ToInt32(read["id"]);
+                        this.Firstname = read["firstname"].ToString();
+                        this.Lastname = read["lastname"].ToString();
+                        this.Birthdate = Convert.ToDateTime(read["birthdate"]);
+                        this.Adresse = read["adresse"].ToString();
+                        this.Codep = Convert.ToInt32(read["codep"]);
+                        this.Cite = read["cite"].ToString();
+                        this.Countrie = read["countrie"].ToString();
+                        this.Email = read["email"].ToString();
+                        this.Prof = read["prof"].ToString();
+                        this.Tel = Convert.ToInt32(read["tel"]);
+                    }
+                    con.Close();
                 }
-                con.Close();
             }
+            catch (Exception ex)
+            {
+                ex.StackTrace.Replace(Environment.NewLine, ex.ToString());
+            }
+
         }
 
         public override string Delete(int idclt)
@@ -179,24 +250,32 @@ namespace ProductManagement.Models
         }
         public override void Update()
         {
-            using (SqlConnection con = new SqlConnection(Connectionstrings.Connectionstring()))
+            try
             {
-                string sqlquery = "update Customer set Firstname='" + this.Firstname +
-                    "', Lastname = '" + this.Lastname + "'" +
-                    ", Birthdate ='" + this.Birthdate + "'" +
-                    ", adresse ='" + this.Adresse + "'" +
-                    ", cite ='" + this.Cite + "'" +
-                    ", countrie ='" + this.Countrie + "'" +
-                    ", Codep ='" + this.Codep + "'" +
-                    ", email ='" + this.Email + "'" +
-                    ", tel ='" + this.Tel + "'" +
-                    ", prof ='" + this.Prof + "'" +
-                    " where id =" + this.Id;
-                SqlCommand cmd = new SqlCommand(sqlquery, con);
-                con.Open();
-                cmd.ExecuteNonQuery();
-                con.Close();
+                using (SqlConnection con = new SqlConnection(Connectionstrings.Connectionstring()))
+                {
+                    string sqlquery = "update Customer set Firstname='" + this.Firstname +
+                        "', Lastname = '" + this.Lastname + "'" +
+                        ", Birthdate ='" + this.Birthdate + "'" +
+                        ", adresse ='" + this.Adresse + "'" +
+                        ", cite ='" + this.Cite + "'" +
+                        ", countrie ='" + this.Countrie + "'" +
+                        ", Codep ='" + this.Codep + "'" +
+                        ", email ='" + this.Email + "'" +
+                        ", tel ='" + this.Tel + "'" +
+                        ", prof ='" + this.Prof + "'" +
+                        " where id =" + this.Id;
+                    SqlCommand cmd = new SqlCommand(sqlquery, con);
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                    con.Close();
+                }
             }
+            catch (Exception ex)
+            {
+                ex.StackTrace.Replace(Environment.NewLine, ex.ToString());
+            }
+
         }
     }
 }
