@@ -16875,7 +16875,7 @@ fieldset[disabled] .form-group.is-focused .togglebutton label {
 }
 
 .table thead tr th {
-  font-size: 1.063rem;
+  font-size: 14px;
 }
 
 .table .th-description {

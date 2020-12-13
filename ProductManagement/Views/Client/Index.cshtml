@@ -77,14 +77,19 @@
                 "language": {
                     "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
                 },
+                "columnDefs": [
+                    { "width": "1%", "targets": 0 },
+                    { "width": "10%", "targets": 1 },
+                    { "width": "5%", "targets": 2 }
+                ],
                 processing: true,
                 serverSide: true,
                 searchable: true,
-                  ajax: {
-                url: '@Url.Action("GetClients")',
-                type: 'POST',
-                dataSrc: 'data',
-            },
+                ajax: {
+                    url: '@Url.Action("GetClients")',
+                    type: 'POST',
+                    dataSrc: 'data',
+                },
                 columns: [
                     { data: "Id" },
                     { data: "Firstname" },
@@ -114,7 +119,19 @@
                     { data: "Adresse" },
                     { data: "Codep" },
                     { data: "Email" },
-                    { data: "Tel" },
+                    {
+                        data: "Tel",
+                        mRender: function (data, type, full) {
+                            if (data == 0) {
+                                return "";
+                            }
+                            else
+                            {
+                                return data;
+                            }
+                        }
+                    },
+
                     { data: "Prof" },
                     {
                         data: "Id",
@@ -122,7 +139,7 @@
                             return '<a id="modif" href="#" onclick="Detail('+ data +')">Modifier</a>  |  '
                                 +  '<a id="modif" href="#" onclick="Delete(' + data + ')">Delete</a>'
                         }}
-                     
+
                 ]
 
             }

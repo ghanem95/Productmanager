@@ -136,13 +136,13 @@
         return true;
         });
     $("#tel").keydown(function (e) {
-        if ($(this).val().length < 10 && $.isNumeric(e.key) || e.keyCode == 46 || e.keyCode == 8 || e.keyCode == 37 || e.keyCode == 39)
+        if ($(this).val().length < 10 && $.isNumeric(e.key) || e.keyCode == 9 || e.keyCode == 46 || e.keyCode == 8 || e.keyCode == 37 || e.keyCode == 39)
             return true;
 
         return false;
     });
     $("#codep").keydown(function (e) {
-        if ($(this).val().length < 4 && $.isNumeric(e.key) || e.keyCode == 46 || e.keyCode == 8 || e.keyCode == 37 || e.keyCode == 39)
+        if ($(this).val().length < 4 && $.isNumeric(e.key) || e.keyCode == 9 || e.keyCode == 46 || e.keyCode == 8 || e.keyCode == 37 || e.keyCode == 39)
             return true;
 
         return false;
