@@ -50,7 +50,7 @@ namespace ProductManagement.Models
             this.Prof = string.Empty;
 
         }
-        public IList<Client> ListDatatable(int length, int start, string searchVal)
+        public IList<Client> ListDatatable(int length, int start, string searchVal,string tri,string column)
         {
             List<Client> clients = new List<Client>();
             using (SqlConnection conn = new SqlConnection(Connectionstrings.Connectionstring()))
@@ -60,8 +60,13 @@ namespace ProductManagement.Models
                     conn.Open();
                     SqlCommand cmd = new SqlCommand();
                     StringBuilder sbSQL = new StringBuilder();
-                    sbSQL.AppendFormat("select top({0}) * from (select clt.*, row_number() over(order by [Id] asc) as [row_number] " +
-                        "from Customer clt) clt", length);
+                    column = (Convert.ToInt32(column)+1).ToString();
+                    column = column.Replace("1", "id").Replace("2", "firstname").Replace("3", "lastname").Replace("4", "birthdate")
+                        .Replace("5","Adresse").Replace("6","cite").Replace("7","countrie").Replace("8","codep").Replace("9","email")
+                        .Replace("10","prof").Replace("11","prof");
+                    sbSQL.AppendFormat("select top({0}) * from",length);
+                    sbSQL.AppendFormat(" (select clt.*, row_number() over(order by {0}", column);
+                    sbSQL.AppendFormat(" {0}) as [row_number] from Customer clt) clt",tri);
                     sbSQL.AppendFormat(" where row_number >{0}", start);
 
                     if (!string.IsNullOrEmpty(searchVal))
@@ -71,6 +76,7 @@ namespace ProductManagement.Models
                             "or Adresse like '%{0}%' or Cite like '%{0}%' or Countrie like '%{0}%' or Codep like '%{0}%'" +
                             " or Email like '%{0}%' or Tel like '%{0}%' or Prof like '%{0}%'", searchVal);
                     }
+                  
                     cmd.CommandText = sbSQL.ToString();
                     cmd.Connection = conn;
 
@@ -112,16 +118,16 @@ namespace ProductManagement.Models
                 SqlConnection connect = new SqlConnection(Connectionstrings.Connectionstring());
                 SqlCommand cmd = connect.CreateCommand();
                 cmd.CommandText = "Execute addcustomer @firstname,@lastname,@birthdate,@adresse,@cite,@countrie,@codep,@email,@tel,@prof";
-                cmd.Parameters.Add("@firstname", SqlDbType.NVarChar, 50).Value = this.Firstname;
-                cmd.Parameters.Add("@lastname", SqlDbType.NVarChar, 50).Value = this.Lastname;
-                cmd.Parameters.Add("@birthdate", SqlDbType.Date).Value = this.Birthdate;
-                cmd.Parameters.Add("@adresse", SqlDbType.NVarChar, 50).Value = this.Adresse;
-                cmd.Parameters.Add("@cite", SqlDbType.NVarChar, 50).Value = this.Cite;
-                cmd.Parameters.Add("@countrie", SqlDbType.NVarChar, 50).Value = this.Countrie;
+                cmd.Parameters.Add("@firstname", SqlDbType.NVarChar, 50).Value = this.Firstname.isNull(string.Empty); ;
+                cmd.Parameters.Add("@lastname", SqlDbType.NVarChar, 50).Value = this.Lastname.isNull(string.Empty); ;
+                cmd.Parameters.Add("@birthdate", SqlDbType.Date).Value = this.Birthdate.isNull(Convert.ToDateTime("01/01/1900")); ;
+                cmd.Parameters.Add("@adresse", SqlDbType.NVarChar, 50).Value = this.Adresse.isNull(string.Empty); ;
+                cmd.Parameters.Add("@cite", SqlDbType.NVarChar, 50).Value = this.Cite.isNull(string.Empty); ;
+                cmd.Parameters.Add("@countrie", SqlDbType.NVarChar, 50).Value = this.Countrie.isNull(string.Empty); ;
                 cmd.Parameters.Add("@codep", SqlDbType.Int, 50).Value = this.Codep;
-                cmd.Parameters.Add("@email", SqlDbType.NVarChar, 50).Value = this.Email;
+                cmd.Parameters.Add("@email", SqlDbType.NVarChar, 50).Value = this.Email.isNull(string.Empty);
                 cmd.Parameters.Add("@tel", SqlDbType.Int, 50).Value = this.Tel;
-                cmd.Parameters.Add("@prof", SqlDbType.NVarChar).Value = this.Prof.isNull("");
+                cmd.Parameters.Add("@prof", SqlDbType.NVarChar).Value = this.Prof.isNull(string.Empty);
                 connect.Open();
                 cmd.ExecuteNonQuery();
                 connect.Close();

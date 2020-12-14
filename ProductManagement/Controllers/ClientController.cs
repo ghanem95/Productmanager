@@ -95,8 +95,11 @@ namespace ProductManagement.Controllers
         {
             IList<Client> clients;
             Client client = new Client();
+            int sortColumn = -1;
             string searchVal = HttpContext.Request.Form["search[value]"];
-            clients = client.ListDatatable(length,start,searchVal);
+            string tri = HttpContext.Request.Form["order[0][dir]"];
+            string column = HttpContext.Request.Form["order[0][column]"];
+            clients = client.ListDatatable(length, start, searchVal,tri,column);
             int nbclt = client.countclt();
             var response = new { data = clients, recordsFiltered = nbclt, recordsTotal = nbclt };
             return Json(response, JsonRequestBehavior.AllowGet);

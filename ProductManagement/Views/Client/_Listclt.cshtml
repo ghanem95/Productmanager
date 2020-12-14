@@ -72,7 +72,21 @@
                             var pattern = /Date\(([^)]+)\)/;
                             var results = pattern.exec(data);
                             var dt = new Date(parseFloat(results[1]));
-                            return (dt.getMonth() + 1) + "-" + dt.getDate() + "-" + dt.getFullYear();
+                            var day;
+                            var mounth;
+                            if (dt.getDate() < 10) {
+                                day = "0" + dt.getDate();
+                            }
+                            else {
+                                day = dt.getDate();
+                            }
+                            if (dt.getMonth() < 10) {
+                                mounth = "0" + (dt.getMonth() + 1);
+                            }
+                            else {
+                                mounth = (dt.getMonth() + 1);
+                            }
+                            return (day) + "/" + (mounth) + "/" + dt.getFullYear();
                         }
                     },
                     { data: "Adresse" },
@@ -93,8 +107,8 @@
                     {
                         data: "Id",
                         mRender: function (data, type, full) {
-                            return '<a id="modif" href="#" onclick="Detail('+data+')">Modifier</a>  |  '
-                                +  '<a id="modif" href="#" onclick="Delete(' + data + ')">Delete</a>'
+                            return '<a id="modif" href="#" onclick="Detail(' + data +')" style="font-size:13px">Modifier</a> |   '
+                                + '<a id="modif" href="#" onclick="Delete(' + data + ')" style="font-size:13px">Supprimer</a>'
                         }}
 
                 ]

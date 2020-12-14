@@ -36,13 +36,13 @@
                                     <div class="col-md-4">
                                         <div class="form-group  bmd-form-group">
                                             <label class="bmd-label-floating required">Réference</label>
-                                            @Html.TextBoxFor(model => model.Item1.Reference, new { @class = "form-control" ,@required="required"})
+                                            @Html.TextBoxFor(model => model.Item1.Reference, new { @class = "form-control" ,@required="required", @maxlength = "25" })
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group  bmd-form-group">
                                             <label class="bmd-label-floating required">Nom</label>
-                                            @Html.TextBoxFor(model => model.Item1.Name, new { @class = "form-control" })
+                                            @Html.TextBoxFor(model => model.Item1.Name, new { @class = "form-control", @maxlength = "25" })
                                         </div>
                                     </div>
                                     <div class="col-sm-4">
@@ -57,7 +57,7 @@
                                     <div class="col-md-12">
                                         <div class="form-group  bmd-form-group">
                                             <label class="bmd-label-floating">Description</label>
-                                            @Html.TextBoxFor(model => model.Item1.Desc, new { @class = "form-control" })
+                                            @Html.TextBoxFor(model => model.Item1.Desc, new { @class = "form-control", @maxlength = "100" })
                                         </div>
                                     </div>
                                 </div>

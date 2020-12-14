@@ -108,10 +108,10 @@
                                 day = dt.getDate();
                             }
                             if (dt.getMonth() < 10) {
-                                mounth = "0" + dt.getMonth();
+                                mounth = "0" + (dt.getMonth() + 1);
                             }
                             else {
-                                mounth = dt.getMonth();
+                                mounth = (dt.getMonth()+1);
                             }
                             return (day) + "/" + (mounth) + "/" + dt.getFullYear();
                         }
@@ -136,8 +136,8 @@
                     {
                         data: "Id",
                         mRender: function (data, type, full) {
-                            return '<a id="modif" href="#" onclick="Detail('+ data +')">Modifier</a>  |  '
-                                +  '<a id="modif" href="#" onclick="Delete(' + data + ')">Delete</a>'
+                            return '<a id="modif" href="#" onclick="Detail('+ data +')" style="font-size:13px">Modifier</a>  |  '
+                                + '<a id="modif" href="#" onclick="Delete(' + data + ')" style="font-size:13px">Supprimer</a>'
                         }}
 
                 ]

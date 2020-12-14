@@ -37,20 +37,20 @@
                                     <div class="col-md-4">
                                         <div class="form-group  bmd-form-group">
                                             <label class="bmd-label-floating required">Nom</label>
-                                            @Html.TextBoxFor(model => model.Firstname, new {@id="fn", @class = "form-control", required = "required",@type="text" })
+                                            @Html.TextBoxFor(model => model.Firstname, new {@id="fn", @class = "form-control", required = "required",@type="text", @maxlength = "25" })
                                             @Html.ValidationMessageFor(m => m.Firstname, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group  bmd-form-group">
                                             <label class="bmd-label-floating required">Prénom</label>
-                                            @Html.TextBoxFor(model => model.Lastname, new { @id = "ln", @class = "form-control", required = "required" })
+                                            @Html.TextBoxFor(model => model.Lastname, new { @id = "ln", @class = "form-control", required = "required", @maxlength = "25" })
                                         </div>
                                     </div>
                                     <div class="col-sm-4">
                                         <div class="form-group  bmd-form-group">
-                                            <label class="bmd-label-floating" style="margin-left:87px">Date de Naissance</label>
-                                            @Html.TextBoxFor(m => m.Birthdate, new { @class = "form-control datepicker datetimepicker-input", @type = "date" })
+                                            <label class="bmd-label-floating required" style="margin-left:87px">Date de Naissance</label>
+                                            @Html.TextBoxFor(m => m.Birthdate, new { @class = "form-control datepicker datetimepicker-input", @type = "date",required="required" })
 
                                         </div>
                                     </div>
@@ -59,7 +59,7 @@
                                     <div class="col-md-12">
                                         <div class="form-group  bmd-form-group">
                                             <label class="bmd-label-floating required">Adresse</label>
-                                            @Html.TextBoxFor(model => model.Adresse, new { @class = "form-control", required = "required" })
+                                            @Html.TextBoxFor(model => model.Adresse, new { @class = "form-control", required = "required", @maxlength = "100" })
                                         </div>
                                     </div>
                                 </div>
@@ -67,7 +67,7 @@
                                     <div class="col-md-4">
                                         <div class="form-group  bmd-form-group">
                                             <label class="bmd-label-floating required">Cité</label>
-                                            @Html.TextBoxFor(model => model.Cite, new { @class = "form-control",required="required" })
+                                            @Html.TextBoxFor(model => model.Cite, new { @class = "form-control",required="required", @maxlength = "25" })
                                         </div>
                                     </div>
                                     <div class="col-md-4">
@@ -87,7 +87,7 @@
                                     <div class="col-md-4">
                                         <div class="form-group  bmd-form-group">
                                             <label class="bmd-label-floating">Email</label>
-                                            @Html.TextBoxFor(model => model.Email, new { @class = "form-control", type = "email", required = "required" })
+                                            @Html.TextBoxFor(model => model.Email, new { @class = "form-control", type = "email", @maxlength = "50" })
                                         </div>
                                     </div>
                                     <div class="col-md-4">
@@ -99,7 +99,7 @@
                                     <div class="col-md-4">
                                         <div class="form-group  bmd-form-group">
                                             <label class="bmd-label-floating">Profession</label>
-                                            @Html.TextBoxFor(model => model.Prof, new {@id="prof", @class = "form-control" })
+                                            @Html.TextBoxFor(model => model.Prof, new {@id="prof", @class = "form-control", @maxlength = "25" })
                                         </div>
                                     </div>
                                 </div>

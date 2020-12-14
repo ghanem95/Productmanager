@@ -12,99 +12,103 @@
 
 
 <div class="card">
+        <div class="card-header card-header-primary">
+            <h4 class="card-title">Gestion des produits</h4>
+            <p class="card-category">Liste de produit</p>
+        </div>
+        <div class="card-body">
+            <div class="col-md-12">
 
-    <div class="card-header card-header-primary">
-        <h4 class="card-title">Gestion des produits</h4>
-        <p class="card-category">Liste de produit</p>
-    </div>
-    <div class="card-body">
-        <table id="example" class="table table-striped table-bordered" style="width:100%">
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Référence</th>
-                    <th>Nom</th>
-                    <th>Description</th>
-                    <th>Date de fabrication</th>
-                    <th>Type</th>
-                    <th>Prix</th>
-                    <th>Quantité</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
+                <table id="example" class="table table-striped table-bordered" style="width:100%; max-width:100%">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Référence</th>
+                            <th>Nom</th>
+                            <th><div style="width:200px">Description</div> </th>
+                            <th>Date de fabrication</th>
+                            <th>Type</th>
+                            <th>Prix</th>
+                            <th>Quantité</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
 
-                @foreach (var pdt in ViewBag.Listpdt)
+                        @foreach (var pdt in ViewBag.Listpdt)
+                        {
+                            <tr>
+                                <td>@pdt.Id</td>
+                                <td>@pdt.Reference</td>
+                                <td>@pdt.Name</td>
+                                <td><div style="width:200px">@pdt.Desc</div></td>
+                                <td>@pdt.Datefab</td>
+                                <td>@pdt.Desctype</td>
+                                <td>@pdt.Price</td>
+                                <td>@pdt.Qt</td>
+                                <td>
+                                    <a id="modif" href="#" onclick="Detail(@pdt.Id)">Modifier</a> | <a id="delete1" onclick="Delete(@pdt.Id)" href="#">Supprimer</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            </div>
+        </div>
+
+    <script>
+        $(document).ready(function () {
+            $('#example').DataTable(
                 {
-                    <tr>
-                        <td>@pdt.Id</td>
-                        <td>@pdt.Reference</td>
-                        <td>@pdt.Name</td>
-                        <td>@pdt.Desc</td>
-                        <td>@pdt.Datefab</td>
-                        <td>@pdt.Desctype</td>
-                        <td>@pdt.Price</td>
-                        <td>@pdt.Qt</td>
-                        <td>
-                            <a id="modif" href="#" onclick="Detail(@pdt.Id)">Modifier</a> | <a id="delete1" onclick="Delete(@pdt.Id)" href="#">Supprimer</a>
-                        </td>
-                    </tr>
+                    "language": {
+                        "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
+                    },
+                    "columnDefs": [
+                        { "width": "30%", "targets": 3 }
+                    ],
                 }
-            </tbody>
-        </table>
+            );
+        });
+    </script>
+    <script>
 
-    </div>
-</div>
+        function Delete(id) {
+            $("#confirm").modal('show');
+            $("#btnconfirm").click(function () {
+                $.ajax({
+                    url: '/Product/Deletepdt',
+                    data: { "id": id },
+                    contentType: 'application/html; charset=utf-8',
+                    type: 'GET',
+                    dataType: 'html',
+                    success: function (result) {
 
-<script>
-    $(document).ready(function () {
-        $('#example').DataTable(
-            {
-                "language": {
-                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
-                }
-            }
-        );
-    });
-</script>
-<script>
-
-    function Delete(id) {
-        $("#confirm").modal('show');
-        $("#btnconfirm").click(function () {
+                        $('#Listpdt').html(result);
+                        $("#confirm").modal('hide');
+                    },
+                    error: function (result) {
+                        alert('Tu ne peux pas supprimer ce produit');
+                    }
+                })
+            });
+        }
+        function Detail(id) {
             $.ajax({
-                url: '/Product/Deletepdt',
+                url: '/Product/Detailpdt',
                 data: { "id": id },
                 contentType: 'application/html; charset=utf-8',
                 type: 'GET',
                 dataType: 'html',
                 success: function (result) {
-
-                    $('#Listpdt').html(result);
-                    $("#confirm").modal('hide');
+                    $('#detailpdt').html(result);
+                    $('#modaldetail').modal('show');
                 },
                 error: function (result) {
-                    alert('Tu ne peux pas supprimer ce produit');
+                    //$('#detailpdt').html(result);
+                    alert('fail');
                 }
             })
-        });
-    }
-    function Detail(id) {
-        $.ajax({
-            url: '/Product/Detailpdt',
-            data: { "id": id },
-            contentType: 'application/html; charset=utf-8',
-            type: 'GET',
-            dataType: 'html',
-            success: function (result) {
-                $('#detailpdt').html(result);
-                $('#modaldetail').modal('show');
-            },
-            error: function (result) {
-                //$('#detailpdt').html(result);
-                alert('fail');
-            }
-        })
-    }
-</script>
+        }
+    </script>
 
