@@ -1,6 +1,6 @@
 ﻿@model ProductManagement.Models.Type
 
-<h4 style="margin-left:200px;color:red">@ViewBag.msg</h4>
+
 <div class="card">
     <div class="card-header card-header-primary">
         @*<h4 class="card-title">Gestion des clients</h4>*@
@@ -30,28 +30,12 @@
                     </tr>
                 }
             </tbody>
-            @*<tfoot>
-                    <tr>
-                        <th>Name</th>
-                        <th>Age</th>
-                        <th>Adresse</th>
-                    </tr>
-                </tfoot>*@
         </table>
 
     </div>
+    <div class="row"><h4 style="margin-left:200px;color:red">@ViewBag.msg</h4></div>
 </div>
-<script>
-    $(document).ready(function () {
-        $('#example').DataTable(
-            {
-                "language": {
-                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
-                }
-            }
-        );
-    });
-</script>
+
 <script>
     function Delete(id) {
         $("#confirm").modal('show');
@@ -66,6 +50,13 @@
 
                     $('#Listtype').html(result);
                     $("#confirm").modal('hide');
+                    $('#example').DataTable(
+                        {
+                            "language": {
+                                "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
+                            }
+                        }
+                    );
                 },
                 error: function (result) {
                     alert('fail');

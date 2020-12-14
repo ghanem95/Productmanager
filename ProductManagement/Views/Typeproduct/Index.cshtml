@@ -25,6 +25,7 @@
         <div class="container-fluid">
             <div class="content">
                 <div class="container-fluid">
+                   
                     <div class="row">
                         <div class="col-md-5" id="Addtype">
                             @{
@@ -63,5 +64,16 @@
     $(document).ready(function () {
         $(".nav-item").removeClass("active");
         $("#linktype").addClass("active");
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $('#example').DataTable(
+            {
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
+                }
+            }
+        );
     });
 </script>

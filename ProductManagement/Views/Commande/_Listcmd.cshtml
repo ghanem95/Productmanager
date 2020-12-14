@@ -1,5 +1,5 @@
 ﻿@model Tuple<ProductManagement.Models.Commande, ProductManagement.Models.Product, ProductManagement.Models.Client>
-<h4 style="margin-left:250px;color:red">@ViewBag.msg</h4>
+
 <div class="col-md-12">
     <div class="card">
         <div class="card-header card-header-primary">
@@ -48,16 +48,18 @@
                     }
                 </tbody>
                 @*<tfoot>
-                        <tr>
-                            <th>Name</th>
-                            <th>Age</th>
-                            <th>Adresse</th>
-                        </tr>
-                    </tfoot>*@
+                    <tr>
+                        <th>Name</th>
+                        <th>Age</th>
+                        <th>Adresse</th>
+                    </tr>
+                </tfoot>*@
             </table>
 
         </div>
+        <h4 style="margin-left:250px;color:red">@ViewBag.msg</h4>
     </div>
+ 
 </div>
 <script>
     function Delete(id) {
