@@ -53,5 +53,17 @@ namespace ProductManagement.Controllers
 
             return RedirectToAction("Index");
         }
+        public JsonResult GetProducts(int length, int start)
+        {
+            IList<Product> products;
+            Product product = new Product();
+            string searchVal = HttpContext.Request.Form["search[value]"];
+            string tri = HttpContext.Request.Form["order[0][dir]"];
+            string column = HttpContext.Request.Form["order[0][column]"];
+            products = product.ListDatatable(length, start, searchVal, tri, column);
+            int nbclt = product.CountListDatatable(length, start, searchVal, tri, column);
+            var response = new { data = products, recordsFiltered = nbclt, recordsTotal = nbclt };
+            return Json(response, JsonRequestBehavior.AllowGet);
+        }
     }
 }

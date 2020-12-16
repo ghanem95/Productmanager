@@ -50,9 +50,9 @@ namespace ProductManagement.Models
             this.Prof = string.Empty;
 
         }
-        public IList<Client> ListDatatable(int length, int start, string searchVal,string tri,string column)
+        public int CountListDatatable(int length, int start, string searchVal, string tri, string column)
         {
-            List<Client> clients = new List<Client>();
+            int nbr = 0;
             using (SqlConnection conn = new SqlConnection(Connectionstrings.Connectionstring()))
             {
                 try
@@ -60,13 +60,13 @@ namespace ProductManagement.Models
                     conn.Open();
                     SqlCommand cmd = new SqlCommand();
                     StringBuilder sbSQL = new StringBuilder();
-                    column = (Convert.ToInt32(column)+1).ToString();
+                    column = (Convert.ToInt32(column) + 1).ToString();
                     column = column.Replace("1", "id").Replace("2", "firstname").Replace("3", "lastname").Replace("4", "birthdate")
-                        .Replace("5","Adresse").Replace("6","cite").Replace("7","countrie").Replace("8","codep").Replace("9","email")
-                        .Replace("10","prof").Replace("11","prof");
-                    sbSQL.AppendFormat("select top({0}) * from",length);
+                        .Replace("5", "Adresse").Replace("6", "cite").Replace("7", "countrie").Replace("8", "codep").Replace("9", "email")
+                        .Replace("10", "tel").Replace("11", "prof");
+                    sbSQL.AppendFormat("select count(*) nbr from", length);
                     sbSQL.AppendFormat(" (select clt.*, row_number() over(order by {0}", column);
-                    sbSQL.AppendFormat(" {0}) as [row_number] from Customer clt) clt",tri);
+                    sbSQL.AppendFormat(" {0}) as [row_number] from Customer clt) clt", tri);
                     sbSQL.AppendFormat(" where row_number >{0}", start);
 
                     if (!string.IsNullOrEmpty(searchVal))
@@ -76,12 +76,48 @@ namespace ProductManagement.Models
                             "or Adresse like '%{0}%' or Cite like '%{0}%' or Countrie like '%{0}%' or Codep like '%{0}%'" +
                             " or Email like '%{0}%' or Tel like '%{0}%' or Prof like '%{0}%'", searchVal);
                     }
-                  
+
                     cmd.CommandText = sbSQL.ToString();
                     cmd.Connection = conn;
-
+                    
                     SqlDataReader reader = cmd.ExecuteReader();
 
+                    while (reader.Read())
+                    {
+                        nbr = Convert.ToInt32(reader["nbr"]);
+                    }
+                    reader.Close();
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+
+                }
+            }
+
+            return nbr;
+
+        }
+        public IList<Client> ListDatatable(int length, int start, string searchVal,string tri,string column)
+        {
+            column = column.Replace("0", "id").Replace("1", "firstname").Replace("2", "lastname").Replace("3", "birthdate")
+                .Replace("4", "Adresse").Replace("5", "cite").Replace("6", "countrie").Replace("7", "codep").Replace("8", "email")
+                .Replace("9", "tel").Replace("10", "prof");
+            List<Client> clients = new List<Client>();
+            using (SqlConnection conn = new SqlConnection(Connectionstrings.Connectionstring()))
+            {
+                try
+                {
+                    SqlCommand cmd = new SqlCommand("selectcustomers", conn);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@number", length);
+                    cmd.Parameters.AddWithValue("@start", start);
+                    cmd.Parameters.AddWithValue("@sortcolumn", column);
+                    cmd.Parameters.AddWithValue("@tri", tri);
+                    cmd.Parameters.AddWithValue("@searchval", searchVal);
+                    conn.Open();
+                    cmd.Connection = conn;
+                    SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
                         clients.Add(new Client()
@@ -104,7 +140,7 @@ namespace ProductManagement.Models
                 }
                 catch (Exception ex)
                 {
-
+                    ex.StackTrace.Replace(Environment.NewLine, ex.ToString());
                 }
             }
 
@@ -116,20 +152,20 @@ namespace ProductManagement.Models
             try
             {
                 SqlConnection connect = new SqlConnection(Connectionstrings.Connectionstring());
-                SqlCommand cmd = connect.CreateCommand();
-                cmd.CommandText = "Execute addcustomer @firstname,@lastname,@birthdate,@adresse,@cite,@countrie,@codep,@email,@tel,@prof";
-                cmd.Parameters.Add("@firstname", SqlDbType.NVarChar, 50).Value = this.Firstname.isNull(string.Empty); ;
-                cmd.Parameters.Add("@lastname", SqlDbType.NVarChar, 50).Value = this.Lastname.isNull(string.Empty); ;
-                cmd.Parameters.Add("@birthdate", SqlDbType.Date).Value = this.Birthdate.isNull(Convert.ToDateTime("01/01/1900")); ;
-                cmd.Parameters.Add("@adresse", SqlDbType.NVarChar, 50).Value = this.Adresse.isNull(string.Empty); ;
-                cmd.Parameters.Add("@cite", SqlDbType.NVarChar, 50).Value = this.Cite.isNull(string.Empty); ;
-                cmd.Parameters.Add("@countrie", SqlDbType.NVarChar, 50).Value = this.Countrie.isNull(string.Empty); ;
-                cmd.Parameters.Add("@codep", SqlDbType.Int, 50).Value = this.Codep;
-                cmd.Parameters.Add("@email", SqlDbType.NVarChar, 50).Value = this.Email.isNull(string.Empty);
-                cmd.Parameters.Add("@tel", SqlDbType.Int, 50).Value = this.Tel;
-                cmd.Parameters.Add("@prof", SqlDbType.NVarChar).Value = this.Prof.isNull(string.Empty);
+                SqlCommand cmd = new SqlCommand("addcustomer", connect);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@firstname", this.Firstname.isNull(string.Empty));
+                cmd.Parameters.AddWithValue("@lastname", this.Lastname.isNull(string.Empty));
+                cmd.Parameters.AddWithValue("@birthdate", this.Birthdate);
+                cmd.Parameters.AddWithValue("@adresse", this.Adresse.isNull(string.Empty));
+                cmd.Parameters.AddWithValue("@cite", this.Cite.isNull(string.Empty));
+                cmd.Parameters.AddWithValue("@countrie", this.Countrie.isNull(string.Empty));
+                cmd.Parameters.AddWithValue("@codep", this.Codep);
+                cmd.Parameters.AddWithValue("@email", this.Email.isNull(string.Empty));
+                cmd.Parameters.AddWithValue("@tel", this.Tel);
+                cmd.Parameters.AddWithValue("@prof", this.Prof.isNull(string.Empty));
                 connect.Open();
-                cmd.ExecuteNonQuery();
+                int rowAffected = cmd.ExecuteNonQuery();
                 connect.Close();
             }
             catch (Exception ex)
@@ -148,8 +184,9 @@ namespace ProductManagement.Models
             {
                 try
                 {
-                    string sqlquery = "select * from Customer";
-                    SqlCommand cmd = new SqlCommand(sqlquery, con);
+                    //string sqlquery = "select * from Customer";
+                    SqlCommand cmd = new SqlCommand("selectcustomer", con);
+                    cmd.CommandType = CommandType.StoredProcedure;
                     con.Open();
                     SqlDataReader read = cmd.ExecuteReader();
                     while (read.Read())

@@ -100,7 +100,7 @@ namespace ProductManagement.Controllers
             string tri = HttpContext.Request.Form["order[0][dir]"];
             string column = HttpContext.Request.Form["order[0][column]"];
             clients = client.ListDatatable(length, start, searchVal,tri,column);
-            int nbclt = client.countclt();
+            int nbclt = client.CountListDatatable(length, start, searchVal, tri, column);
             var response = new { data = clients, recordsFiltered = nbclt, recordsTotal = nbclt };
             return Json(response, JsonRequestBehavior.AllowGet);
         }

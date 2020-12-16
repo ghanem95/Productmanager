@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Text;
 using System.Web;
 
 namespace ProductManagement.Models
@@ -31,6 +32,100 @@ namespace ProductManagement.Models
         public DateTime Datefab { get => datefab; set => datefab = value; }
         public string Desctype { get => desctype; set => desctype = value; }
 
+
+        public int CountListDatatable(int length, int start, string searchVal, string tri, string column)
+        {
+            int nbr = 0;
+            using (SqlConnection conn = new SqlConnection(Connectionstrings.Connectionstring()))
+            {
+                try
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand();
+                    StringBuilder sbSQL = new StringBuilder();
+                    column = (Convert.ToInt32(column) + 1).ToString();
+                    column = column.Replace("1", "id").Replace("2", "ref").Replace("3", "name").Replace("4", "description")
+                        .Replace("5", "datefab").Replace("6", "type").Replace("7", "price").Replace("8", "qt");
+                    sbSQL.AppendFormat("select count(*) nbr from", length);
+                    sbSQL.AppendFormat(" (select pdt.*, row_number() over(order by {0}", column);
+                    sbSQL.AppendFormat(" {0}) as [row_number] from Product pdt) pdt", tri);
+                    sbSQL.AppendFormat(" where row_number >{0}", start);
+
+                    if (!string.IsNullOrEmpty(searchVal))
+                    {
+                        sbSQL.AppendFormat(" and ref like '%{0}%' or name like '%{0}%' or FORMAT(datefab, 'dd/MM/yyyy ') " +
+                            "like '%{0}%' or description like '%{0}%' or Price like '%{0}%' or Qt like '%{0}%'", searchVal);
+                    }
+
+
+                    cmd.CommandText = sbSQL.ToString();
+                    cmd.Connection = conn;
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        nbr = Convert.ToInt32(reader["nbr"]);
+                    }
+                    reader.Close();
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+
+                }
+            }
+
+            return nbr;
+
+        }
+        public IList<Product> ListDatatable(int length, int start, string searchVal, string tri, string column)
+        {
+            List<Product> clients = new List<Product>();
+            using (SqlConnection conn = new SqlConnection(Connectionstrings.Connectionstring()))
+            {
+                try
+                {
+                    column = column.Replace("0", "pdt.id").Replace("1", "pdt.ref").Replace("2", "pdt.name").Replace("3", "pdt.description")
+                    .Replace("4", "pdt.datefab").Replace("5", "t.type").Replace("6", "pdt.price").Replace("7", "pdt.qt");
+                    SqlCommand cmd = new SqlCommand("selectproducts", conn);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@number", length);
+                    cmd.Parameters.AddWithValue("@start", start);
+                    cmd.Parameters.AddWithValue("@sortcolumn", column);
+                    cmd.Parameters.AddWithValue("@tri", tri);
+                    cmd.Parameters.AddWithValue("@searchval", searchVal);
+                    conn.Open();
+                    cmd.Connection = conn;
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        clients.Add(new Product()
+                        {
+                            Id = Convert.ToInt32(reader["Id"]),
+                            Reference = reader["Ref"].ToString(),
+                            Name = reader["Name"].ToString(),
+                            Datefab = Convert.ToDateTime(reader["Datefab"]),
+                            Desc = reader["Description"].ToString(),
+                            Desctype= reader["desctype"].ToString(),
+                            Type = Convert.ToInt32(reader["Type"]),
+                            Price = Convert.ToInt32(reader["Price"]),
+                            Qt = Convert.ToInt32(reader["Qt"]),
+                        }); ;
+                    }
+                    reader.Close();
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+
+                }
+            }
+
+
+            return clients;
+        }
         public override void Add()
         {
             try
