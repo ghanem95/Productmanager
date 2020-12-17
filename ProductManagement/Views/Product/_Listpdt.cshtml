@@ -33,25 +33,6 @@
                             <th>Action</th>
                         </tr>
                     </thead>
-                    @*<tbody>
-
-                        @foreach (var pdt in ViewBag.Listpdt)
-                        {
-                            <tr>
-                                <td>@pdt.Id</td>
-                                <td>@pdt.Reference</td>
-                                <td>@pdt.Name</td>
-                                <td><div style="width:200px">@pdt.Desc</div></td>
-                                <td>@pdt.Datefab</td>
-                                <td>@pdt.Desctype</td>
-                                <td>@pdt.Price</td>
-                                <td>@pdt.Qt</td>
-                                <td>
-                                    <a id="modif" href="#" onclick="Detail(@pdt.Id)">Modifier</a> | <a id="delete1" onclick="Delete(@pdt.Id)" href="#">Supprimer</a>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>*@
                 </table>
             </div>
             </div>
@@ -154,7 +135,6 @@
                     $('#modaldetail').modal('show');
                 },
                 error: function (result) {
-                    //$('#detailpdt').html(result);
                     alert('fail');
                 }
             })
