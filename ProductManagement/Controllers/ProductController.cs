@@ -12,9 +12,7 @@ namespace ProductManagement.Controllers
         // GET: Product
         public ActionResult Index()
         {
-            Product product = new Product();
-            ViewBag.Listpdt = product.List();
-            Tuple<Product, ProductManagement.Models.Type> tuple = new Tuple<Product, ProductManagement.Models.Type>(product, new ProductManagement.Models.Type());
+            Tuple<Product, ProductManagement.Models.Type> tuple = new Tuple<Product, ProductManagement.Models.Type>(new Product(), new ProductManagement.Models.Type());
             return View("Index", tuple);
         }
 
@@ -22,8 +20,6 @@ namespace ProductManagement.Controllers
         {
             ProductManagement.Models.Product product = new ProductManagement.Models.Product();
            ViewBag.msg= product.Delete(id);
-            ViewBag.Listpdt = product.List();
-
             return PartialView("_Listpdt");
         }
 

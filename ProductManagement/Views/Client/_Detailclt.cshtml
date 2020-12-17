@@ -1,15 +1,15 @@
 ﻿@model ProductManagement.Models.Client
 
-<link href="../assets/demo/demo.css" rel="stylesheet" />
 <script src="~/assets/js/core/jquery.min.js"></script>
 <script src="~/assets/js/core/popper.min.js"></script>
 <script src="~/assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
-<link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css">
+<script src="~/assets/js/datatable/jquery.datatables.min.js"></script>
+<link href="~/assets/css/datatable/jquery.datatables.min.css" rel="stylesheet" />
 <link href="../assets/css/material-dashboard.css?v=2.1.2" rel="stylesheet" />
 <script src="~/assets/js/material-dashboard.js?v=2.1.2" type="text/javascript"></script>
 <script src="~/assets/js/core/bootstrap-material-design.min.js"></script>
 <link href="~/Content/required.css" rel="stylesheet" />
+
 @using (Html.BeginForm("Save", "Client", FormMethod.Post))
 {
     <div class="row">

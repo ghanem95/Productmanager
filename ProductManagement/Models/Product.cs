@@ -18,7 +18,6 @@ namespace ProductManagement.Models
         private int type;
         private string desctype;
         private int qt;
-        bool available;
         DateTime datefab;
 
         public int Id { get => id; set => id = value; }
@@ -28,11 +27,40 @@ namespace ProductManagement.Models
         public float Price { get => price; set => price = value; }
         public int Type { get => type; set => type = value; }
         public int Qt { get => qt; set => qt = value; }
-        public bool Available { get => available; set => available = value; }
         public DateTime Datefab { get => datefab; set => datefab = value; }
         public string Desctype { get => desctype; set => desctype = value; }
 
 
+        public IList<Product> List()
+        {
+
+            List<Product> Listpdt = new List<Product>();
+            using (SqlConnection con = new SqlConnection(Connectionstrings.Connectionstring()))
+            {
+                try
+                {
+                    SqlCommand cmd = new SqlCommand("Listproducts", con);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    con.Open();
+                    SqlDataReader read = cmd.ExecuteReader();
+                    while (read.Read())
+                    {
+                        Product product = new Product();
+                        product.Id = Convert.ToInt32(read["id"]);
+                        product.Name = read["name"].ToString();
+                        Listpdt.Add(product);
+
+                    }
+                    con.Close();
+                }
+                catch (Exception ex)
+                {
+                    ex.StackTrace.Replace(Environment.NewLine, ex.ToString());
+                }
+            }
+
+            return Listpdt;
+        }
         public int CountListDatatable(int length, int start, string searchVal, string tri, string column)
         {
             int nbr = 0;
@@ -40,29 +68,19 @@ namespace ProductManagement.Models
             {
                 try
                 {
-                    conn.Open();
-                    SqlCommand cmd = new SqlCommand();
-                    StringBuilder sbSQL = new StringBuilder();
                     column = (Convert.ToInt32(column) + 1).ToString();
                     column = column.Replace("1", "id").Replace("2", "ref").Replace("3", "name").Replace("4", "description")
                         .Replace("5", "datefab").Replace("6", "type").Replace("7", "price").Replace("8", "qt");
-                    sbSQL.AppendFormat("select count(*) nbr from", length);
-                    sbSQL.AppendFormat(" (select pdt.*, row_number() over(order by {0}", column);
-                    sbSQL.AppendFormat(" {0}) as [row_number] from Product pdt) pdt", tri);
-                    sbSQL.AppendFormat(" where row_number >{0}", start);
-
-                    if (!string.IsNullOrEmpty(searchVal))
-                    {
-                        sbSQL.AppendFormat(" and ref like '%{0}%' or name like '%{0}%' or FORMAT(datefab, 'dd/MM/yyyy ') " +
-                            "like '%{0}%' or description like '%{0}%' or Price like '%{0}%' or Qt like '%{0}%'", searchVal);
-                    }
-
-
-                    cmd.CommandText = sbSQL.ToString();
+                    SqlCommand cmd = new SqlCommand("countdatatableproducts", conn);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@number", length);
+                    cmd.Parameters.AddWithValue("@start", start);
+                    cmd.Parameters.AddWithValue("@sortcolumn", column);
+                    cmd.Parameters.AddWithValue("@tri", tri);
+                    cmd.Parameters.AddWithValue("@searchval", searchVal);
+                    conn.Open();
                     cmd.Connection = conn;
-
                     SqlDataReader reader = cmd.ExecuteReader();
-
                     while (reader.Read())
                     {
                         nbr = Convert.ToInt32(reader["nbr"]);
@@ -72,7 +90,7 @@ namespace ProductManagement.Models
                 }
                 catch (Exception ex)
                 {
-
+                    ex.StackTrace.Replace(Environment.NewLine, ex.ToString());
                 }
             }
 
@@ -119,7 +137,7 @@ namespace ProductManagement.Models
                 }
                 catch (Exception ex)
                 {
-
+                    ex.StackTrace.Replace(Environment.NewLine, ex.ToString());
                 }
             }
 
@@ -131,16 +149,15 @@ namespace ProductManagement.Models
             try
             {
                 SqlConnection connect = new SqlConnection(Connectionstrings.Connectionstring());
-                SqlCommand cmd = connect.CreateCommand();
-                cmd.CommandText = "Execute addproduct @ref,@name,@description,@datefab,@type,@price,@qt,@available";
-                cmd.Parameters.Add("@ref", SqlDbType.NVarChar, 50).Value = this.Reference;
-                cmd.Parameters.Add("@name", SqlDbType.NVarChar, 50).Value = this.Name;
-                cmd.Parameters.Add("@description", SqlDbType.NVarChar).Value = this.Desc.isNull(string.Empty);
-                cmd.Parameters.Add("@datefab", SqlDbType.Date).Value = this.Datefab;
-                cmd.Parameters.Add("@type", SqlDbType.Int).Value = this.Type;
-                cmd.Parameters.Add("@price", SqlDbType.Float, 50).Value = this.Price;
-                cmd.Parameters.Add("@qt", SqlDbType.Int).Value = this.Qt;
-                cmd.Parameters.Add("@available", SqlDbType.Decimal).Value = Convert.ToDecimal(this.Available);
+                SqlCommand cmd = new SqlCommand("addproduct", connect);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@ref", this.Reference.isNull(string.Empty));
+                cmd.Parameters.AddWithValue("@name", this.Name.isNull(string.Empty));
+                cmd.Parameters.AddWithValue("@description", this.Desc.isNull(string.Empty));
+                cmd.Parameters.AddWithValue("@datefab", this.Datefab);
+                cmd.Parameters.AddWithValue("@type", this.Type);
+                cmd.Parameters.AddWithValue("@price", this.Price);
+                cmd.Parameters.AddWithValue("@qt", this.Qt);
                 connect.Open();
                 cmd.ExecuteNonQuery();
                 connect.Close();
@@ -156,8 +173,8 @@ namespace ProductManagement.Models
             int nb = 0;
             using (SqlConnection con = new SqlConnection(Connectionstrings.Connectionstring()))
             {
-                string sqlquery = "select count(*) as nb from Product ";
-                SqlCommand cmd = new SqlCommand(sqlquery, con);
+                SqlCommand cmd = new SqlCommand("countproducts", con);
+                cmd.CommandType = CommandType.StoredProcedure;
                 con.Open();
                 SqlDataReader read = cmd.ExecuteReader();
                 while (read.Read())
@@ -169,53 +186,15 @@ namespace ProductManagement.Models
 
             return nb;
         }
-        public IList<Product> List()
-        {
-
-            List<Product> Listpdt = new List<Product>();
-            using (SqlConnection con = new SqlConnection(Connectionstrings.Connectionstring()))
-            {
-                try
-                {
-                    string sqlquery = "select p.id,ref,name,p.description,datefab,t.type as desctype,p.type,price,qt,available from product p" +
-                                      " inner join typeproduct t on t.id = p.type";
-                    SqlCommand cmd = new SqlCommand(sqlquery, con);
-                    con.Open();
-                    SqlDataReader read = cmd.ExecuteReader();
-                    while (read.Read())
-                    {
-                        Product product = new Product();
-                        product.Id = Convert.ToInt32(read["id"]);
-                        product.Reference = read["ref"].ToString();
-                        product.Name = read["name"].ToString();
-                        product.Desc = read["description"].ToString();
-                        product.Datefab = Convert.ToDateTime(read["datefab"]);
-                        product.Type = Convert.ToInt32(read["type"]);
-                        product.Desctype = read["desctype"].ToString();
-                        product.Price = Convert.ToInt32(read["price"]);
-                        product.Qt = Convert.ToInt32(read["qt"]);
-                        product.Available = Convert.ToBoolean(read["available"]);
-                        Listpdt.Add(product);
-
-                    }
-                    con.Close();
-                }
-                catch (Exception ex)
-                {
-                    ex.StackTrace.Replace(Environment.NewLine, ex.ToString());
-                }
-            }
-
-            return Listpdt;
-        }
         public override void Affiche(int id)
         {
             try
             {
                 using (SqlConnection con = new SqlConnection(Connectionstrings.Connectionstring()))
                 {
-                    string sqlquery = "select * from Product where id=" + id;
-                    SqlCommand cmd = new SqlCommand(sqlquery, con);
+                    SqlCommand cmd = new SqlCommand("selectproductbyid", con);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@id", id);
                     con.Open();
                     SqlDataReader read = cmd.ExecuteReader();
                     while (read.Read())
@@ -229,7 +208,6 @@ namespace ProductManagement.Models
                         this.Type = Convert.ToInt32(read["type"]);
                         this.Price = Convert.ToInt32(read["price"]);
                         this.Qt = Convert.ToInt32(read["qt"]);
-                        this.Available = Convert.ToBoolean(read["available"]);
                     }
                     con.Close();
                 }
@@ -247,13 +225,14 @@ namespace ProductManagement.Models
             string msg = "";
             try
             {
-                using (SqlConnection con = new SqlConnection(Connectionstrings.Connectionstring()))
+                using (SqlConnection connect = new SqlConnection(Connectionstrings.Connectionstring()))
                 {
-                    string sqlquery = "Delete from Product where id =" + id;
-                    SqlCommand cmd = new SqlCommand(sqlquery, con);
-                    con.Open();
-                    cmd.ExecuteNonQuery();
-                    con.Close();
+                    SqlCommand cmd = new SqlCommand("Deleteproduct", connect);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@id", id);
+                    connect.Open();
+                    int rowAffected = cmd.ExecuteNonQuery();
+                    connect.Close();
                     msg = "Produit supprimé";
 
                 }
@@ -269,21 +248,21 @@ namespace ProductManagement.Models
         {
             try
             {
-                using (SqlConnection con = new SqlConnection(Connectionstrings.Connectionstring()))
+                using (SqlConnection connect = new SqlConnection(Connectionstrings.Connectionstring()))
                 {
-                    string sqlquery = "update Product set Ref='" + this.Reference +
-                        "', Name = '" + this.Name + "'" +
-                        ", Description ='" + this.Desc + "'" +
-                        ", datefab ='" + this.Datefab + "'" +
-                        ", Type ='" + this.Type + "'" +
-                        ", Price ='" + this.Price + "'" +
-                        ", Qt ='" + this.Qt + "'" +
-                        ", Available ='" + Convert.ToDecimal(this.Available) + "'" +
-                        " where id =" + this.Id;
-                    SqlCommand cmd = new SqlCommand(sqlquery, con);
-                    con.Open();
-                    cmd.ExecuteNonQuery();
-                    con.Close();
+                    SqlCommand cmd = new SqlCommand("updateproduct", connect);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@id", this.Id);
+                    cmd.Parameters.AddWithValue("@ref", this.Reference.isNull(string.Empty));
+                    cmd.Parameters.AddWithValue("@name", this.Name.isNull(string.Empty));
+                    cmd.Parameters.AddWithValue("@Description", this.Desc.isNull(string.Empty));
+                    cmd.Parameters.AddWithValue("@datefab", this.Datefab);
+                    cmd.Parameters.AddWithValue("@type", this.Type);
+                    cmd.Parameters.AddWithValue("@price", this.Price);
+                    cmd.Parameters.AddWithValue("@qt", this.Qt);
+                    connect.Open();
+                    int rowAffected = cmd.ExecuteNonQuery();
+                    connect.Close();
                 }
             }
             catch (Exception ex)

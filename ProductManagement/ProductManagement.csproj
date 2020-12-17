@@ -141,6 +141,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="assets\css\images\sort_both.png" />
+    <Content Include="assets\css\datatable\jquery.datatables.min.css" />
     <Content Include="assets\css\material-dashboard-rtl.css" />
     <Content Include="assets\css\material-dashboard.css" />
     <Content Include="assets\css\material-dashboard.min.css" />
@@ -165,6 +167,7 @@
     <Content Include="assets\js\core\bootstrap-material-design.min.js" />
     <Content Include="assets\js\core\jquery.min.js" />
     <Content Include="assets\js\core\popper.min.js" />
+    <Content Include="assets\js\datatable\jquery.datatables.min.js" />
     <Content Include="assets\js\material-dashboard.js" />
     <Content Include="assets\js\material-dashboard.min.js" />
     <Content Include="assets\js\plugins\arrive.min.js" />

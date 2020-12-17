@@ -30,8 +30,6 @@ namespace ProductManagement.Controllers
 
             CountryList.Sort();
             ViewBag.CountryList = CountryList;
-            Client clt = new Client();
-            ViewBag.ListClient = clt.List();
             return View();
         }
         public ActionResult AddClt()
@@ -55,7 +53,6 @@ namespace ProductManagement.Controllers
         {
             Client client = new Client();
             ViewBag.msg = client.Delete(idclt);
-            ViewBag.ListClient = client.List();
             return PartialView("_Listclt");
         }
         public PartialViewResult DetailClt(int idclt)
