@@ -1,0 +1,34 @@
+﻿@model ProductManagement.Models.User
+@{
+    Layout = null;
+}
+
+<link href="maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<link href="~/assets/css/Login/Login.css" rel="stylesheet" />
+<!------ Include the above in your HEAD tag ---------->
+
+<div class="wrapper fadeInDown">
+    <div id="formContent">
+        <!-- Tabs Titles -->
+        <!-- Icon -->
+        <div class="fadeIn first">
+           <h2>Authentication</h2>
+        </div>
+
+        <!-- Login Form -->
+        @using (Html.BeginForm("Login", "Login", FormMethod.Post))
+        {
+            @Html.TextBoxFor(model => model.Login, new { @class = "fadeIn second", @required = "required", @placeholder = "login" })
+            @Html.TextBoxFor(model => model.Password, new { @class = "fadeIn third", @required = "required", @placeholder = "password" })
+            <input type="submit" class="fadeIn fourth" value="Log In">
+        }
+
+        <!-- Remind Passowrd -->
+        <div id="formFooter">
+            <a class="underlineHover" href="#">Forgot Password?</a>
+        </div>
+
+    </div>
+</div>

@@ -1,11 +1,11 @@
 use master
 go
---IF (EXISTS (SELECT name FROM master.dbo.sysdatabases 
---WHERE ('[' + name + ']' = 'Freelance'
---OR name = 'Freelance')))
---PRINT 'db exists'
---drop table freelance
---go
+IF (EXISTS (SELECT name FROM master.dbo.sysdatabases 
+WHERE ('[' + name + ']' = 'Freelance'
+OR name = 'Freelance')))
+PRINT 'db exists'
+drop table freelance
+go
 create database Freelance
 go
 use freelance
@@ -19,8 +19,25 @@ IF EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE='BASE TABLE'
 drop table [typeproduct]
 IF EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE='BASE TABLE' AND TABLE_NAME='Customer') 
 drop table [Customer]
-
+IF EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE='BASE TABLE' AND TABLE_NAME='User') 
+drop table [User]
 go
+CREATE TABLE [dbo].[user](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[login] [nvarchar](50) null,
+	[password] [nvarchar](50) null,
+	[firstname] [nvarchar](50) NULL,
+	[lastname] [nvarchar](50) NULL,
+	[birthdate] [date] NULL,
+	[adresse] [nvarchar](100) NULL,
+	[cite] [nvarchar](100) NULL,
+	[countrie] [nvarchar](100) NULL,
+	[codep] [int] NULL,
+	[email] [nvarchar](100) NULL,
+	[tel] [int] NULL,
+	[prof] [nvarchar](100) NULL
+	primary key(id))
+	go
 -- création de la table customer
 CREATE TABLE [dbo].[customer](
 	[id] [int] IDENTITY(1,1) NOT NULL,
