@@ -8,6 +8,7 @@ drop table freelance
 go
 create database Freelance
 go
+
 use freelance
 go
 
@@ -21,11 +22,14 @@ IF EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE='BASE TABLE'
 drop table [Customer]
 IF EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE='BASE TABLE' AND TABLE_NAME='User') 
 drop table [User]
+IF EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE='BASE TABLE' AND TABLE_NAME='typeprofil') 
+drop table [typeprofil]
 go
 CREATE TABLE [dbo].[user](
 	[id] [int] IDENTITY(1,1) NOT NULL,
 	[login] [nvarchar](50) null,
 	[password] [nvarchar](50) null,
+	[typeprofil] [int] NULL,
 	[firstname] [nvarchar](50) NULL,
 	[lastname] [nvarchar](50) NULL,
 	[birthdate] [date] NULL,
@@ -35,7 +39,7 @@ CREATE TABLE [dbo].[user](
 	[codep] [int] NULL,
 	[email] [nvarchar](100) NULL,
 	[tel] [int] NULL,
-	[prof] [nvarchar](100) NULL
+	[prof] [nvarchar](100) NULL,
 	primary key(id))
 	go
 -- création de la table customer
@@ -85,7 +89,21 @@ CREATE TABLE [dbo].[commande](
 	foreign key(idpdt) references product(id),
 	foreign key(idclt) references customer(id),
 	)
-
+	-- création de la table typeproduct
+CREATE TABLE [dbo].[typeprofil](
+	[id] [int] NOT NULL,
+	[name] [nvarchar](50) NULL,
+	[Description] [nvarchar](50) NULL
+	primary key (id)
+	)
+go
+IF EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND name = 'selectuser')
+DROP PROCEDURE selectuser
+GO
+CREATE procedure selectuser @login nvarchar(50), @password nvarchar(50)
+as
+select * from "user" where "login"=@login and "password"=@password
+go
 --Procédure stocké Addcustomer
 IF EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND name = 'addcustomer')
 DROP PROCEDURE addcustomer
@@ -97,6 +115,19 @@ CREATE procedure addcustomer @firstname nvarchar(50),@lastname nvarchar(50), @bi
 as
 insert into customer(firstname,lastname,birthdate,adresse,cite,countrie,codep,email,tel,prof) 
 values   (@firstname,@lastname,@birthdate,@adresse,@cite,@countrie,@codep,@email,@tel,@prof)
+
+go
+--Procédure stocké Adduser
+IF EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND name = 'Adduser')
+DROP PROCEDURE Adduser
+GO
+
+
+CREATE procedure Adduser @login nvarchar(50),@password nvarchar(50), @typeprofil int,  @firstname nvarchar(50),@lastname nvarchar(50), @birthdate date, @adresse nvarchar(100),@cite nvarchar(100),
+@countrie nvarchar(100),@codep int, @email nvarchar(100),@tel int,@prof nvarchar(100)
+as
+insert into [User]("login",[password],typeprofil,firstname,lastname,birthdate,adresse,cite,countrie,codep,email,tel,prof) 
+values   (@login,@password,@typeprofil,@firstname,@lastname,@birthdate,@adresse,@cite,@countrie,@codep,@email,@tel,@prof)
 
 go
 --Procédure stocké addproduct
@@ -119,6 +150,17 @@ CREATE procedure addtype @type nvarchar(50), @description nvarchar(100)
 as
 insert into typeproduct 
 select isnull(max(id),0)+1, @type,@description from typeproduct
+
+go
+--Procédure stocké addtype
+IF EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND name = 'addtypeprofil')
+DROP PROCEDURE addtypeprofil
+GO
+
+CREATE procedure addtypeprofil @name nvarchar(50), @description nvarchar(100)
+as
+insert into typeprofil
+select isnull(max(id),0)+1, @name,@description from typeprofil
 
 go
 --procédure stocké addcommande
@@ -274,6 +316,7 @@ create procedure Listproducts as
 select p.id,ref,name,p.description,datefab,t.type as desctype,p.type,price,qt from product p 
 inner join typeproduct t on t.id = p.type
 go
+
 --procédure stocké countdatatableproducts
 IF EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND name = 'countdatatableproducts')
 DROP PROCEDURE countdatatableproducts
@@ -373,5 +416,83 @@ GO
 create procedure countproducts as
 select count(*) as nb from product
 
+go
+-- procédure stocké selectusers
+IF EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND name = 'selectusers')
+DROP PROCEDURE selectusers
+GO
 
+CREATE procedure selectusers @number int,@start int, @sortcolumn nvarchar(30), @tri nvarchar(10),@searchval nvarchar(100) as
+
+DECLARE @cmd AS NVARCHAR(max)
+
+declare @formatdate as varchar(20)
+
+SET @searchVal = ''''+'%' +@searchval+'%'+''''
+
+set @formatdate='''dd/mm/yyyy'''
+
+SET @cmd = N'select top(10) * 
+
+from (
+
+select clt.*, row_number() over(order by ' + @sortcolumn + ' ' + @tri + ') as [row_number] 
+
+from [User] clt) clt 
+
+where row_number >0 and  Firstname like '+@searchval+' or Lastname like '+@searchval+'  or Adresse like '+@searchval+'
+
+or Cite like '+@searchval+' or Countrie like  ' + @searchval +' or Codep like ' +@searchval+' or Email like '
+
++@searchval+' or Tel like '+@searchval+'or Prof like ' +@searchval+'or FORMAT(birthdate, '+ @formatdate +') like '+@searchval 
+
+print @cmd
+
+exec(@cmd)
+go
+
+
+--procédure stocké Deleteuser
+IF EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND name = 'Deleteuser')
+DROP PROCEDURE Deleteuser
+GO
+
+create procedure Deleteuser @id int as
+
+Delete from [User] where id = @id
+go
+
+--procédure stocké selectuserbyid
+IF EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND name = 'selectuserbyid')
+DROP PROCEDURE selectuserbyid
+GO
+
+create procedure selectuserbyid @id int as
+select * from [User] where id=@id
+go
+
+
+--Procédure stocké updateuser
+IF EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND name = 'updateuser')
+DROP PROCEDURE updateuser
+GO
+
+create procedure updateuser @id int, @firstname nvarchar(50),@lastname nvarchar(50),@birthdate date, @adresse nvarchar(100)
+
+,@cite nvarchar(50),@countrie nvarchar(50),@codep int,@email nvarchar(50),@tel nvarchar(50),@prof nvarchar(50),@login nvarchar(50)
+,@password nvarchar(50),@typeprofil int
+ as
+
+update [User] 
+
+set Firstname=@firstname, Lastname = @lastname, 
+
+Birthdate =@birthdate, adresse =@adresse, 
+
+cite =@cite, countrie =@countrie, Codep =@codep, 
+
+email =@email, tel =@tel, prof =@prof
+,[login] = @login,[password]=@password,typeprofil=@typeprofil where id =@id
+
+go
 
