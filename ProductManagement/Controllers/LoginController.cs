@@ -19,6 +19,8 @@ namespace ProductManagement.Controllers
             user.Authentication();
             if(user.Id != 0)
             {
+                Session["name"] = user.Firstname;
+                Session["typeprofil"] = user.Typeprofil;
               return RedirectToAction("Index","Home");
             }
             else
@@ -26,6 +28,12 @@ namespace ProductManagement.Controllers
                 return RedirectToAction("Index");
             }
              
+
+        }
+        public ActionResult Logout()
+        {
+            Session.Clear();
+            return View("Login");
 
         }
     }

@@ -129,6 +129,7 @@
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\TypeproductController.cs" />
+    <Compile Include="Controllers\TypeprofilController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -140,6 +141,7 @@
     <Compile Include="Models\Crud.cs" />
     <Compile Include="Models\Product.cs" />
     <Compile Include="Models\Type.cs" />
+    <Compile Include="Models\Typeprofil.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -408,10 +410,16 @@
     <Content Include="Views\Commande\_Listcmd.cshtml" />
     <Content Include="Views\Commande\_Savecmd.cshtml" />
     <Content Include="Views\Login\Login.cshtml" />
+    <Content Include="Views\Typeprofil\Index.cshtml" />
+    <Content Include="Views\Typeprofil\_Listtype.cshtml" />
+    <Content Include="Views\Typeprofil\_Addtype.cshtml" />
+    <Content Include="Views\User\Index.cshtml" />
+    <Content Include="Views\User\AddUser.cshtml" />
+    <Content Include="Views\User\_Listuser.cshtml" />
+    <Content Include="Views\User\_Detailuser.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\User\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

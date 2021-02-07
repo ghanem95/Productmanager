@@ -11,16 +11,31 @@ namespace ProductManagement.Controllers
     {
         public ActionResult Index()
         {
-            Commande commande = new Commande();
-            ViewBag.nbcmd = commande.countcmd();
-            Client client = new Client();
-            ViewBag.nbclt = client.countclt();
-            Product product = new Product();
-            ViewBag.nbpdt = product.countpdt();
-            Models.Type type = new Models.Type();
-            ViewBag.nbtype = type.counttype();
-
-            return View();
+            if (Session["name"] != null)
+            {
+                if (Convert.ToInt32(Session["typeprofil"]) == 1)
+                {
+                    Commande commande = new Commande();
+                    ViewBag.nbcmd = commande.countcmd();
+                    Client client = new Client();
+                    ViewBag.nbclt = client.countclt();
+                    Product product = new Product();
+                    ViewBag.nbpdt = product.countpdt();
+                    Models.Type type = new Models.Type();
+                    ViewBag.nbtype = type.counttype();
+                    return View();
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Commande");
+                }
+              
+            }
+            else
+            {
+                return RedirectToAction("Login", "Login");
+            }
+       
         }
 
         public ActionResult About()

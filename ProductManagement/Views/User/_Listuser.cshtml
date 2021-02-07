@@ -1,0 +1,143 @@
+﻿@model Tuple<ProductManagement.Models.User, ProductManagement.Models.Typeprofil>
+<div class="row">
+    <div class="col-md-5">
+        <a class="btn btn-primary" href="/User/AddUser">
+            Ajout
+        </a>
+    </div>
+
+</div>
+<div class="card">
+    <div class="card-header card-header-primary">
+        <h4 class="card-title">Gestion des utilisateurs</h4>
+        <p class="card-category">Liste des utilisateurs</p>
+    </div>
+    <div class="card-body">
+        <table id="example" class="table table-striped table-bordered" style="width:100%">
+            <thead style="text-align: center;">
+                <tr>
+                    <th>Id</th>
+                    <th>Nom</th>
+                    <th>Prénom</th>
+                    <th>Date de naissance</th>
+                    <th>Adresse</th>
+                    <th>Code postal</th>
+                    <th>Email</th>
+                    <th>Téléphone</th>
+                    <th>Profession</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+        </table>
+
+    </div>
+    <h4 style="color: red; margin-left: 400px;">@ViewBag.msg</h4>
+</div>
+<script>
+    function Delete(id) {
+        $("#confirm").modal('show');
+        $("#btnconfirm").click(function () {
+            $.ajax({
+                url: '/User/DeleteUser',
+                data: { "iduser": id },
+                contentType: 'application/html; charset=utf-8',
+                type: 'GET',
+                dataType: 'html',
+                success: function (result) {
+
+                    $('#Listclt').html(result);
+                     $('#example').DataTable(
+            {
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
+                             },
+
+                processing: true,
+                serverSide: true,
+                searchable: true,
+                  ajax: {
+                url: '@Url.Action("GetUsers")',
+                type: 'POST',
+                dataSrc: 'data',
+            },
+                columns: [
+                    { data: "Id" },
+                    { data: "Firstname" },
+                    { data: "Lastname" },
+                    {
+                        data: "Birthdate", mRender: function (data) {
+                            var pattern = /Date\(([^)]+)\)/;
+                            var results = pattern.exec(data);
+                            var dt = new Date(parseFloat(results[1]));
+                            var day;
+                            var mounth;
+                            if (dt.getDate() < 10) {
+                                day = "0" + dt.getDate();
+                            }
+                            else {
+                                day = dt.getDate();
+                            }
+                            if (dt.getMonth() < 9) {
+                                mounth = "0" + (dt.getMonth() + 1);
+                            }
+                            else {
+                                mounth = (dt.getMonth() + 1);
+                            }
+                            return (day) + "/" + (mounth) + "/" + dt.getFullYear();
+                        }
+                    },
+                    { data: "Adresse" },
+                    { data: "Codep" },
+                    { data: "Email" },
+                    {
+                        data: "Tel",
+                        mRender: function (data, type, full) {
+                            if (data == 0) {
+                                return "";
+                            }
+                            else {
+                                return data;
+                            }
+                        }
+                    },
+                    { data: "Prof" },
+                    {
+                        data: "Id",
+                        mRender: function (data, type, full) {
+                            return '<a id="modif" href="#" onclick="Detail(' + data +')" style="font-size:13px">Modifier</a> |   '
+                                + '<a id="modif" href="#" onclick="Delete(' + data + ')" style="font-size:13px">Supprimer</a>'
+                        }}
+
+                ]
+
+            }
+        );
+                    $("#confirm").modal('hide');
+                },
+                error: function (result) {
+                    alert('fail');
+                }
+            })
+        });
+    }
+    function Detail(id) {
+        $.ajax({
+            url: '/User/Detailuser',
+            data: { "id": id },
+            contentType: 'application/html; charset=utf-8',
+            type: 'GET',
+            dataType: 'html',
+            success: function (result) {
+                $('#detailsclt').html(result);
+                if ($('#tel').val() == 0) {
+                    $('#tel').val("") ;
+                }
+                $('#modaldetail').modal('show');
+            },
+            error: function (result) {
+                alert('failsssssssss');
+            }
+        })
+    }
+</script>

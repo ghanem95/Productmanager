@@ -18,61 +18,115 @@
 </head>
 
 <body>
+    @{int profil = Convert.ToInt32(Session["typeprofil"]);}
     <div class="wrapper ">
-        <div class="sidebar" data-color="danger" data-background-color="white">
+        <div class="sidebar" data-color="purple" data-background-color="white">
             <!--
-                Tip 1: You can change the color of the sidebar using: data-color="purple | azure | green | orange | danger"
+        Tip 1: You can change the color of the sidebar using: data-color="purple | azure | green | orange | danger"
 
-                Tip 2: you can also add an image using data-image tag
-            -->
+        Tip 2: you can also add an image using data-image tag
+    -->
             <div class="logo">
 
                 <a href="http://www.creative-tim.com" class="simple-text logo-normal">
                     Freelance
                 </a>
             </div>
-            <div class="sidebar-wrapper">
-                <ul class="nav">
-                    <li class="nav-item" id="linkd">
-                        <a class="nav-link" href="/Home/Index">
-                            <i class="material-icons">dashboard</i>
-                            <p>Dashboard</p>
-                        </a>
-                    </li>
-                </ul>
-                <ul class="nav">
-                    <li class="nav-item" id="linkc">
-                        <a class="nav-link" href="/client/index">
-                            <i class="material-icons">person</i>
-                            <p>Gestion des client</p>
-                        </a>
-                    </li>
-                </ul>
-                <ul class="nav">
-                    <li class="nav-item" id="linkp">
-                        <a class="nav-link" href="/Product/index">
-                            <i class="material-icons">store</i>
-                            <p>Gestion des Produits</p>
-                        </a>
-                    </li>
-                </ul>
-                <ul class="nav">
-                    <li class="nav-item" id="linktype">
-                        <a class="nav-link" href="/Typeproduct/index">
-                            <i class="material-icons">build</i>
-                            <p>Type produit</p>
-                        </a>
-                    </li>
-                </ul>
-                <ul class="nav">
-                    <li class="nav-item" id="linkco">
-                        <a class="nav-link" href="/Commande/Index">
-                            <i class="material-icons">dashboard</i>
-                            <p>Gestion des commandes</p>
-                        </a>
-                    </li>
-                </ul>
-            </div>
+            @{
+                    if (profil == 2)
+                {
+                    <div class="sidebar-wrapper">
+
+                        <ul class="nav">
+                            <li class="nav-item" id="linkco">
+                                <a class="nav-link" href="/Commande/Index">
+                                    <i class="material-icons">dashboard</i>
+                                    <p>Gestion des commandes</p>
+                                </a>
+                            </li>
+                        </ul>
+                        <ul class="nav">
+                            <li class="nav-item" id="linkco">
+                                <a class="nav-link" href="/Login/logout">
+                                    <i class="material-icons">logout</i>
+                                    <p>Deconnexion</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                }
+                else
+                {
+                    <div class="sidebar-wrapper">
+                        <ul class="nav">
+                            <li class="nav-item" id="linkd">
+                                <a class="nav-link" href="/Home/Index">
+                                    <i class="material-icons">dashboard</i>
+                                    <p>Dashboard</p>
+                                </a>
+                            </li>
+                        </ul>
+                        <ul class="nav">
+                            <li class="nav-item" id="linkc">
+                                <a class="nav-link" href="/client/index">
+                                    <i class="material-icons">person</i>
+                                    <p>Gestion des client</p>
+                                </a>
+                            </li>
+                        </ul>
+                        <ul class="nav">
+                            <li class="nav-item" id="linkp">
+                                <a class="nav-link" href="/Product/index">
+                                    <i class="material-icons">store</i>
+                                    <p>Gestion des Produits</p>
+                                </a>
+                            </li>
+                        </ul>
+                        <ul class="nav">
+                            <li class="nav-item" id="linktype">
+                                <a class="nav-link" href="/Typeproduct/index">
+                                    <i class="material-icons">build</i>
+                                    <p>Type produit</p>
+                                </a>
+                            </li>
+                        </ul>
+                        <ul class="nav">
+                            <li class="nav-item" id="linktype">
+                                <a class="nav-link" href="/Typeprofil/index">
+                                    <i class="material-icons">build</i>
+                                    <p>Type profil</p>
+                                </a>
+                            </li>
+                        </ul>
+                        <ul class="nav">
+                            <li class="nav-item" id="linkc">
+                                <a class="nav-link" href="/user/index">
+                                    <i class="material-icons">person</i>
+                                    <p>Gestion des utilisateurs</p>
+                                </a>
+                            </li>
+                        </ul>
+                        <ul class="nav">
+                            <li class="nav-item" id="linkco">
+                                <a class="nav-link" href="/Commande/Index">
+                                    <i class="material-icons">dashboard</i>
+                                    <p>Gestion des commandes</p>
+                                </a>
+                            </li>
+                        </ul>
+                        <ul class="nav">
+                            <li class="nav-item" id="linkco">
+                                <a class="nav-link" href="/Login/logout">
+                                    <i class="material-icons">logout</i>
+                                    <p>Deconnexion</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                }
+            }
+
+
         </div>
         <div class="main-panel">
             <!-- Navbar -->
@@ -88,6 +142,7 @@
                         <span class="navbar-toggler-icon icon-bar"></span>
                     </button>
                     <div class="collapse navbar-collapse justify-content-end">
+                        @Session["name"]
                         <ul class="navbar-nav">
                             <li class="nav-item">
                                 <a class="nav-link" href="javascript:;">

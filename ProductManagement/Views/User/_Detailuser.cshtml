@@ -1,0 +1,133 @@
+﻿@model Tuple<ProductManagement.Models.User, ProductManagement.Models.Typeprofil>
+
+<script src="~/assets/js/core/jquery.min.js"></script>
+<script src="~/assets/js/core/popper.min.js"></script>
+<script src="~/assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
+<script src="~/assets/js/datatable/jquery.datatables.min.js"></script>
+<link href="~/assets/css/datatable/jquery.datatables.min.css" rel="stylesheet" />
+<link href="../assets/css/material-dashboard.css?v=2.1.2" rel="stylesheet" />
+<script src="~/assets/js/material-dashboard.js?v=2.1.2" type="text/javascript"></script>
+<script src="~/assets/js/core/bootstrap-material-design.min.js"></script>
+<link href="~/Content/required.css" rel="stylesheet" />
+
+@using (Html.BeginForm("Save", "User", FormMethod.Post))
+{
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group  bmd-form-group">
+                <label class="bmd-label-floating required">Nom</label>
+                @Html.HiddenFor(model => model.Item1.Id)
+                @Html.TextBoxFor(model => model.Item1.Firstname, new { @id = "fn", @class = "form-control", required = "required", @type = "text", @maxlength = "25" })
+                @Html.ValidationMessageFor(m => m.Item1.Firstname, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group  bmd-form-group">
+                <label class="bmd-label-floating required">Prénom</label>
+                @Html.TextBoxFor(model => model.Item1.Lastname, new { @id = "ln", @class = "form-control", required = "required", @maxlength = "25" })
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="form-group  bmd-form-group">
+                <label class="bmd-label-floating" style="margin-left:87px">Date de Naissance</label>
+                @Html.TextBoxFor(m => m.Item1.Birthdate, new { @class = "form-control datepicker datetimepicker-input" })
+
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group  bmd-form-group">
+                <label class="bmd-label-floating required">Adresse</label>
+                @Html.TextBoxFor(model => model.Item1.Adresse, new { @class = "form-control", required = "required", @maxlength = "100" })
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group  bmd-form-group">
+                <label class="bmd-label-floating required">Cité</label>
+                @Html.TextBoxFor(model => model.Item1.Cite, new { @class = "form-control", required = "required", @maxlength = "25" })
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group  bmd-form-group">
+                @Html.DropDownListFor(model => model.Item1.Countrie, new SelectList(ViewBag.CountryList), "Select pays", new { @class = "form-control", required = "required" })
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group  bmd-form-group">
+                <label class="bmd-label-floating required">Code postal</label>
+                @Html.TextBoxFor(model => model.Item1.Codep, new { @id = "codep", @class = "form-control", required = "required" })
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group  bmd-form-group">
+                <label class="bmd-label-floating">Email</label>
+                @Html.TextBoxFor(model => model.Item1.Email, new { @class = "form-control", type = "email", @maxlength = "50" })
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group  bmd-form-group">
+                <label class="bmd-label-floating">Numéro de téléphone</label>
+                @Html.TextBoxFor(model => model.Item1.Tel, new { @id = "tel", @class = "form-control" })
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group  bmd-form-group">
+                <label class="bmd-label-floating">Profession</label>
+                @Html.TextBoxFor(model => model.Item1.Prof, new { @id = "prof", @class = "form-control", @maxlength = "25" })
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group  bmd-form-group">
+                <label class="bmd-label-floating">Login</label>
+                @Html.TextBoxFor(model => model.Item1.Login, new { @id = "tel", @class = "form-control" })
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group  bmd-form-group">
+                <label class="bmd-label-floating">Password</label>
+                @Html.TextBoxFor(model => model.Item1.Password, new { @id = "prof", @class = "form-control", @maxlength = "25" })
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group  bmd-form-group">
+                @Html.DropDownListFor(model => model.Item1.Typeprofil, new SelectList(Model.Item2.List(), "id", "typep"), "Select Type", new { @class = "form-control required", @required = "required" })
+            </div>
+        </div>
+    </div>
+    <input type="submit" value="Enregistrer" class="btn btn-primary pull-right" />
+
+}
+<script>
+    $(document).ready(function () {
+        if ($('#tel').val() == 0) {
+            $('#tel').val() = "";
+        }
+    });
+    $("#fn,#ln,#prof").keydown(function (e) {
+        if ($(this).val().length > 25 || $.isNumeric(e.key))
+            return false;
+
+        return true;
+    });
+    $("#tel").keydown(function (e) {
+        if ($(this).val().length < 10 && $.isNumeric(e.key) || e.keyCode == 9 || e.keyCode == 46 || e.keyCode == 8 || e.keyCode == 37 || e.keyCode == 39)
+            return true;
+
+        return false;
+    });
+    $("#codep").keydown(function (e) {
+        if ($(this).val().length < 4 && $.isNumeric(e.key) || e.keyCode == 9 || e.keyCode == 46 || e.keyCode == 8 || e.keyCode == 37 || e.keyCode == 39)
+            return true;
+
+        return false;
+    });
+
+
+</script>

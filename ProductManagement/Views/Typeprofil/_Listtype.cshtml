@@ -1,0 +1,84 @@
+﻿@model ProductManagement.Models.Typeprofil
+
+
+<div class="card">
+    <div class="card-header card-header-primary">
+        @*<h4 class="card-title">Gestion des clients</h4>*@
+        <p class="card-category">Liste des types de profil</p>
+    </div>
+    <div class="card-body">
+        <table id="example" class="table table-striped table-bordered" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Type</th>
+                    <th>Descrption</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var type in ViewBag.Listtype)
+                {
+                    <tr>
+                        <td>@type.Id</td>
+                        <td>@type.Typep</td>
+                        <td>@type.Description</td>
+                        <td>
+                            <a id="modif" href="#" onclick="Detail(@type.Id)">Modifier</a> | <a id="delete" onclick="Delete(@type.Id)" href="#">Supprimer</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+    <div class="row"><h4 style="margin-left:200px;color:red">@ViewBag.msg</h4></div>
+</div>
+
+<script>
+    function Delete(id) {
+        $("#confirm").modal('show');
+        $("#btnconfirm").click(function () {
+            $.ajax({
+                url: '/Typeprofil/Deletetype',
+                data: { "id": id },
+                contentType: 'application/html; charset=utf-8',
+                type: 'GET',
+                dataType: 'html',
+                success: function (result) {
+
+                    $('#Listtype').html(result);
+                    $("#confirm").modal('hide');
+                    $('#example').DataTable(
+                        {
+                            "language": {
+                                "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
+                            }
+                        }
+                    );
+                },
+                error: function (result) {
+                    alert('fail');
+                }
+            })
+        });
+    }
+    function Detail(id) {
+        $.ajax({
+            url: '/Typeprofil/Detailtype',
+            data: { "id": id },
+            contentType: 'application/html; charset=utf-8',
+            type: 'GET',
+            dataType: 'html',
+            success: function (result) {
+                $('#Addtype').html(result);
+                $('.bmd-form-group').addClass('is-focused');
+                $('#txtp').text('Modification de type');
+            },
+            error: function (result) {
+                alert('fail');
+            }
+        })
+    }
+</script>
