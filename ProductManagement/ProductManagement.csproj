@@ -139,7 +139,9 @@
     <Compile Include="Models\Connectionstrings.cs" />
     <Compile Include="Models\Corrector.cs" />
     <Compile Include="Models\Crud.cs" />
+    <Compile Include="Models\Design.cs" />
     <Compile Include="Models\Product.cs" />
+    <Compile Include="Models\Stat.cs" />
     <Compile Include="Models\Type.cs" />
     <Compile Include="Models\Typeprofil.cs" />
     <Compile Include="Models\User.cs" />

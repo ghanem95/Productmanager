@@ -244,8 +244,10 @@ The above copyright notice and this permission notice shall be included in all c
 <!-- Material Dashboard DEMO methods, don't include it in your project! -->
 <script src="../assets/demo/demo.js"></script>
 <script>
+   
     $(document).ready(function () {
         $().ready(function () {
+
             $sidebar = $('.sidebar');
 
             $sidebar_img_container = $sidebar.find('.sidebar-background');
@@ -284,9 +286,9 @@ The above copyright notice and this permission notice shall be included in all c
 
                 var new_color = $(this).data('color');
 
-                if ($sidebar.length != 0) {
-                    $sidebar.attr('data-color', new_color);
-                }
+                //if ($sidebar.length != 0) {
+                //    $sidebar.attr('data-color', new_color);
+                //}
 
                 if ($full_page.length != 0) {
                     $full_page.attr('filter-color', new_color);
@@ -297,16 +299,16 @@ The above copyright notice and this permission notice shall be included in all c
                 }
             });
 
-            $('.fixed-plugin .background-color .badge').click(function () {
-                $(this).siblings().removeClass('active');
-                $(this).addClass('active');
+            //$('.fixed-plugin .background-color .badge').click(function () {
+            //    $(this).siblings().removeClass('active');
+            //    $(this).addClass('active');
 
-                var new_color = $(this).data('background-color');
+            //    var new_color = $(this).data('background-color');
 
-                if ($sidebar.length != 0) {
-                    $sidebar.attr('data-background-color', new_color);
-                }
-            });
+            //    if ($sidebar.length != 0) {
+            //        $sidebar.attr('data-background-color', new_color);
+            //    }
+            //});
 
             $('.fixed-plugin .img-holder').click(function () {
                 $full_page_background = $('.full-page-background');

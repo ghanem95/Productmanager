@@ -24,6 +24,15 @@ IF EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE='BASE TABLE'
 drop table [User]
 IF EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE='BASE TABLE' AND TABLE_NAME='typeprofil') 
 drop table [typeprofil]
+IF EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE='BASE TABLE' AND TABLE_NAME='Design') 
+drop table [Design]
+go
+Create table Design(
+id_user int,
+design nvarchar(50),
+datatable nvarchar(50),
+btn nvarchar(50),
+)
 go
 CREATE TABLE [dbo].[user](
 	[id] [int] IDENTITY(1,1) NOT NULL,
@@ -496,3 +505,10 @@ email =@email, tel =@tel, prof =@prof
 
 go
 
+
+CREATE procedure updatedesign @id int,@design nvarchar(50),@datatable nvarchar(50),@btn nvarchar(50)  as
+update design set design=@design, datatable=@datatable,btn=@btn where id_user=@id
+go
+
+Create procedure getdesign @id int as
+select * from design where id_user=@id

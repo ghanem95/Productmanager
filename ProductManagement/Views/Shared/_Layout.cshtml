@@ -20,7 +20,7 @@
 <body>
     @{int profil = Convert.ToInt32(Session["typeprofil"]);}
     <div class="wrapper ">
-        <div class="sidebar" data-color="purple" data-background-color="white">
+        <div class="sidebar" data-color=@Session["design"] data-background-color="white">
             <!--
         Tip 1: You can change the color of the sidebar using: data-color="purple | azure | green | orange | danger"
 
@@ -91,7 +91,7 @@
                             </li>
                         </ul>
                         <ul class="nav">
-                            <li class="nav-item" id="linktype">
+                            <li class="nav-item" id="linktypeprofil">
                                 <a class="nav-link" href="/Typeprofil/index">
                                     <i class="material-icons">build</i>
                                     <p>Type profil</p>
@@ -99,7 +99,7 @@
                             </li>
                         </ul>
                         <ul class="nav">
-                            <li class="nav-item" id="linkc">
+                            <li class="nav-item" id="linkuser">
                                 <a class="nav-link" href="/user/index">
                                     <i class="material-icons">person</i>
                                     <p>Gestion des utilisateurs</p>
@@ -194,12 +194,12 @@
             <li class="adjustments-line">
                 <a href="javascript:void(0)" class="switch-trigger active-color">
                     <div class="badge-colors ml-auto mr-auto">
-                        <span class="badge filter badge-purple" data-color="purple"></span>
-                        <span class="badge filter badge-azure" data-color="azure"></span>
-                        <span class="badge filter badge-green" data-color="green"></span>
-                        <span class="badge filter badge-warning" data-color="orange"></span>
-                        <span class="badge filter badge-danger" data-color="danger"></span>
-                        <span class="badge filter badge-rose active" data-color="rose"></span>
+                        <span class="badge filter badge-purple" data-color="purple" btn="btn-primary" datatable="card-header-primary"></span>
+                        <span class="badge filter badge-azure" data-color="azure" btn="btn-info" datatable="card-header-info"></span>
+                        <span class="badge filter badge-green" data-color="green" btn="btn-success" datatable="card-header-success"></span>
+                        <span class="badge filter badge-warning" data-color="orange" btn="btn-warning" datatable="card-header-warning"></span>
+                        <span class="badge filter badge-danger" data-color="danger" btn="btn-danger" datatable="card-header-danger"></span>
+                        <span class="badge filter badge-rose active" data-color="rose" btn="btn-rose" datatable="card-header-rose"></span>
                     </div>
                     <div class="clearfix"></div>
                 </a>
@@ -226,7 +226,7 @@
                 </a>
             </li>
             <li class="button-container">
-                <a href="https://www.creative-tim.com/product/material-dashboard" target="_blank" class="btn btn-primary btn-block">Free Download</a>
+                <a href="https://www.creative-tim.com/product/material-dashboard" target="_blank" class="btn @Session["btn"] btn-block">Free Download</a>
             </li>
             <li class="header-title">Want more components?</li>
             <li class="button-container">
@@ -296,12 +296,28 @@
 
           $(this).siblings().removeClass('active');
           $(this).addClass('active');
-
-          var new_color = $(this).data('color');
-
-          if ($sidebar.length != 0) {
-            $sidebar.attr('data-color', new_color);
-          }
+            var id =@Session["user"];
+            var new_color = $(this).data('color');
+            var datatable = $(this).attr('datatable');
+            var btn = $(this).attr('btn');
+            $.ajax({
+                url: '/Home/Updatedesign',
+                data: { "id": id, "design": new_color, "datatable": datatable,"btn":btn },
+                contentType: 'application/html; charset=utf-8',
+                type: 'GET',
+                dataType: 'html',
+                success: function (result) {
+                    if ($sidebar.length != 0) {
+                        $sidebar.attr('data-color', new_color);
+                        $(".datadesign").removeClass().addClass("card-header").addClass("datadesign").addClass(datatable);
+                        $(".btn").removeClass().addClass("btn").addClass(btn)
+                    }
+                },
+                error: function (result) {
+                    alert('fail');
+                }
+            })
+        
 
           if ($full_page.length != 0) {
             $full_page.attr('filter-color', new_color);
@@ -312,16 +328,16 @@
           }
         });
 
-        $('.fixed-plugin .background-color .badge').click(function() {
-          $(this).siblings().removeClass('active');
-          $(this).addClass('active');
+        //$('.fixed-plugin .background-color .badge').click(function() {
+        //  $(this).siblings().removeClass('active');
+        //  $(this).addClass('active');
 
-          var new_color = $(this).data('background-color');
+        //  var new_color = $(this).data('background-color');
 
-          if ($sidebar.length != 0) {
-            $sidebar.attr('data-background-color', new_color);
-          }
-        });
+        //  if ($sidebar.length != 0) {
+        //    $sidebar.attr('data-background-color', new_color);
+        //  }
+        //});
 
         $('.fixed-plugin .img-holder').click(function() {
           $full_page_background = $('.full-page-background');

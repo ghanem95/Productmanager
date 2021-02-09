@@ -1,7 +1,7 @@
 ﻿@model Tuple<ProductManagement.Models.Product, ProductManagement.Models.Type>
 <div class="row">
     <div class="col-md-5">
-        <a class="btn btn-primary" href="/Product/Addproduct">
+        <a class="btn @Session["btn"]" href="/Product/Addproduct">
             Ajout
         </a>
     </div>
@@ -12,7 +12,7 @@
 
 
 <div class="card">
-        <div class="card-header card-header-primary">
+        <div class="card-header datadesign @Session["datatable"]">
             <h4 class="card-title">Gestion des produits</h4>
             <p class="card-category">Liste de produit</p>
         </div>

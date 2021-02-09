@@ -1,14 +1,14 @@
 ﻿@model Tuple<ProductManagement.Models.User, ProductManagement.Models.Typeprofil>
 <div class="row">
     <div class="col-md-5">
-        <a class="btn btn-primary" href="/User/AddUser">
+        <a class="btn @Session["btn"]" href="/User/AddUser">
             Ajout
         </a>
     </div>
 
 </div>
 <div class="card">
-    <div class="card-header card-header-primary">
+    <div class="card-header datadesign @Session["datatable"]">
         <h4 class="card-title">Gestion des utilisateurs</h4>
         <p class="card-category">Liste des utilisateurs</p>
     </div>

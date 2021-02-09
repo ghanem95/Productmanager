@@ -19,6 +19,7 @@ namespace ProductManagement.Controllers
             user.Authentication();
             if(user.Id != 0)
             {
+                Session["user"] = user.Id;
                 Session["name"] = user.Firstname;
                 Session["typeprofil"] = user.Typeprofil;
               return RedirectToAction("Index","Home");

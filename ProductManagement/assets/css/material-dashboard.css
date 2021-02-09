@@ -15283,8 +15283,8 @@ fieldset[disabled] .form-group.is-focused .togglebutton label {
     .sidebar .nav li .dropdown-menu a:hover,
     .sidebar .nav li .dropdown-menu a:focus,
     .sidebar .nav li.active > [data-toggle="collapse"] {
-        background-color: #9c27b0;
-        color: white;
+        background-color: rgba(0, 0, 0, 0.14);
+        color: black;
         box-shadow: none;
     }
 
@@ -17518,9 +17518,9 @@ html[dir="rtl"] .form-check .form-check-sign .check:before {
   box-shadow: none;
 }
 
-.card .card-header.card-header-image.no-shadow.shadow-normal {
-  box-shadow: 0 16px 38px -12px rgba(0, 0, 0, 0.56), 0 4px 25px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);
-}
+    .card .card-header.card-header-image.no-shadow.shadow-normal {
+        .card .card-header-primary .card-icon, .card .card-header-primary:not(.card-header-icon):not(.card-header-text), .card .card-header-primary .card-text box-shadow: 0 16px 38px -12px rgba(0, 0, 0, 0.56), 0 4px 25px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);
+    }
 
 .card .card-header.card-header-image.no-shadow .colored-shadow {
   display: none !important;

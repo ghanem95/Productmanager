@@ -1,14 +1,14 @@
 ﻿@model ProductManagement.Models.Client
 <div class="row">
     <div class="col-md-5">
-        <a class="btn btn-primary" href="/Client/AddClt">
+        <a class="btn @Session["btn"]" href="/Client/AddClt">
             Ajout
         </a>
     </div>
 
 </div>
 <div class="card">
-    <div class="card-header card-header-primary">
+    <div class="card-header datadesign @Session["datatable"]">
         <h4 class="card-title">Gestion des clients</h4>
         <p class="card-category">Liste des clients</p>
     </div>
