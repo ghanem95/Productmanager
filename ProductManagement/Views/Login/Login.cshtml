@@ -21,7 +21,7 @@
         @using (Html.BeginForm("Login", "Login", FormMethod.Post))
         {
             @Html.TextBoxFor(model => model.Login, new { @class = "fadeIn second", @required = "required", @placeholder = "login" })
-            @Html.TextBoxFor(model => model.Password, new { @class = "fadeIn third", @required = "required", @placeholder = "password" })
+            @Html.PasswordFor(model => model.Password, new { @class = "fadeIn third", @required = "required", @placeholder = "password" })
             <input type="submit" class="fadeIn fourth" value="Log In">
         }
 
