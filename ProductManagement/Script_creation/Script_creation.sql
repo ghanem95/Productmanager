@@ -26,6 +26,30 @@ IF EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE='BASE TABLE'
 drop table [typeprofil]
 IF EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE='BASE TABLE' AND TABLE_NAME='Design') 
 drop table [Design]
+IF EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE='BASE TABLE' AND TABLE_NAME='complaint') 
+drop table [complaint]
+IF EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE='BASE TABLE' AND TABLE_NAME='state_complaint') 
+drop table [state_complaint]
+IF EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE='BASE TABLE' AND TABLE_NAME='type_complaint') 
+drop table [type_complaint]
+go
+create table complaint(
+id int,
+title nvarchar(50),
+description nvarchar(2000),
+type int,
+product nvarchar(100),
+Creation_date date, 
+state int,
+)
+create table state_complaint(
+id int,
+[state] nvarchar(100)
+)
+create table type_complaint(
+id int,
+[type] nvarchar(100)
+)
 go
 Create table Design(
 id_user int,
@@ -346,7 +370,7 @@ set @cmd= N'select count(*) nbr from (
 
 select pdt.id,pdt.ref,pdt.name,pdt.description,pdt.datefab,pdt.[type],t.[type] 
 
-as desctype,pdt.price,pdt.qt, row_number() over(order by id) as [row_number] 
+as desctype,pdt.price,pdt.qt, row_number() over(order by pdt.id) as [row_number] 
 
 from Product pdt inner join [typeproduct] t on t.id=pdt.[type]) pdt where row_number >0
 
@@ -505,10 +529,149 @@ email =@email, tel =@tel, prof =@prof
 
 go
 
-
+IF EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND name = 'updatedesign')
+DROP PROCEDURE updatedesign
+GO
 CREATE procedure updatedesign @id int,@design nvarchar(50),@datatable nvarchar(50),@btn nvarchar(50)  as
 update design set design=@design, datatable=@datatable,btn=@btn where id_user=@id
 go
-
+IF EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND name = 'getdesign')
+DROP PROCEDURE getdesign
+GO
 Create procedure getdesign @id int as
 select * from design where id_user=@id
+go
+IF EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND name = 'Listtypecomplaint')
+DROP PROCEDURE Listtypecomplaint
+GO
+create procedure Listtypecomplaint as
+select * from type_complaint
+go
+IF EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND name = 'Liststatecomplaint')
+DROP PROCEDURE Liststatecomplaint
+GO
+create procedure Liststatecomplaint as
+select * from complaint
+
+go
+
+IF EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND name = 'addcomplaint')
+DROP PROCEDURE addcomplaint
+GO
+Create procedure addcomplaint @title nvarchar(50),@description nvarchar(50),@creation_date date,
+
+@type int,@state  int,@product nvarchar(50)
+
+as
+
+insert into complaint(id,title,description,type,product,Creation_date,state)
+
+select isnull(max(id),0)+1, @title,@description,@type,@product ,@creation_date,1 from complaint
+go
+--procédure stocké countdatatablecustomers
+IF EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND name = 'countdatatablecomplaints')
+DROP PROCEDURE countdatatablecomplaints
+GO
+create procedure countdatatablecomplaints @number int,@start int, @sortcolumn nvarchar(30), @tri nvarchar(10),@searchval nvarchar(100) as
+
+DECLARE @cmd AS NVARCHAR(max)
+
+declare @formatdate as varchar(20)
+
+SET @searchVal = ''''+'%' +@searchval+'%'+''''
+
+set @formatdate='''dd/mm/yyyy'''
+
+SET @cmd = N'select count(*) nbr 
+
+from (
+
+select c.*, row_number() over(order by c.id) as [row_number] 
+
+from Complaint c
+inner join type_complaint t on t.id=c.type
+inner join state_complaint s on s.id=c.state) clt 
+
+where row_number >0 and  Title like '+@searchval+' or Description like '+@searchval+'  or type like '+@searchval+'
+
+or product like '+@searchval+' or FORMAT(Creation_date, '+ @formatdate +') like  ' + @searchval +' or state like ' +@searchval
+
+print @cmd
+
+exec(@cmd)
+go
+
+-- procédure stocké selectcustomers
+IF EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND name = 'selectcomplaints')
+DROP PROCEDURE selectcomplaints
+GO
+
+CREATE procedure selectcomplaints @number int,@start int, @sortcolumn nvarchar(30), @tri nvarchar(10),@searchval nvarchar(100) as
+
+DECLARE @cmd AS NVARCHAR(max)
+
+declare @formatdate as varchar(20)
+
+SET @searchVal = ''''+'%' +@searchval+'%'+''''
+
+set @formatdate='''dd/mm/yyyy'''
+
+SET @cmd = N'select top(10) * 
+
+from (
+
+select c.*,t.type as desctype,s.state as descstate, row_number() over(order by c.' + @sortcolumn + ' ' + @tri + ') as [row_number] 
+
+from Complaint c
+inner join type_complaint t on t.id=c.type
+inner join state_complaint s on s.id=c.state) clt 
+
+where row_number >0 and  Title like '+@searchval+' or Description like '+@searchval+'  or type like '+@searchval+'
+
+or product like '+@searchval+' or FORMAT(Creation_date, '+ @formatdate +') like  ' + @searchval +' or state like ' +@searchval
+print @cmd
+
+exec(@cmd)
+go
+
+IF EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND name = 'updatecomplaint')
+DROP PROCEDURE updatecomplaint
+GO
+create procedure updatecomplaint @id int, @title nvarchar(50),@description nvarchar(50),@creation_date date
+,@type int,@product nvarchar(50),@state int
+
+ as
+
+
+
+update [Complaint] 
+
+
+
+set title=@title, description = @description, 
+
+
+
+creation_date =@creation_date, type =@type, 
+
+
+
+product =@product, [State] =@State
+
+ where id =@id
+
+
+go
+
+
+IF EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND name = 'selectcomplaintbyid')
+DROP PROCEDURE selectcomplaintbyid
+GO
+create procedure selectcomplaintbyid @id int as
+
+select * from [Complaint] where id=@id
+go
+create procedure stateproduct as
+select count(*) as nb,t.type from product p
+inner join typeproduct t on p.type=t.id
+group by t.type

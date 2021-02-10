@@ -1,0 +1,103 @@
+﻿@model Tuple<ProductManagement.Models.Complaint, ProductManagement.Models.Complaint_type, ProductManagement.Models.Product>
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="~/assets/js/core/popper.min.js"></script>
+    <script src="~/assets/js/core/bootstrap-material-design.min.js"></script>
+    <script src="~/assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
+    <script src="~/assets/js/material-dashboard.js?v=2.1.2" type="text/javascript"></script>
+    <link href="~/Content/required.css" rel="stylesheet" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Add Client</title>
+
+</head>
+<body>
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="container">
+
+                </div>
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header datadesign @Session["datatable"]">
+                            <h4 class="card-title">Gestion des réclamation</h4>
+                            <p class="card-category">Ajouter une réclamation</p>
+                        </div>
+                        <div class="card-body">
+                            @using (Html.BeginForm("Save", "Complaint", FormMethod.Post))
+                            {
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group  bmd-form-group">
+                                        <label class="bmd-label-floating required">Titre</label>
+                                        @Html.TextBoxFor(model => model.Item1.Title, new { @id = "fn", @class = "form-control", required = "required", @type = "text", @maxlength = "25" })
+                                        @Html.ValidationMessageFor(model => model.Item1.Title, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group  bmd-form-group">
+                                        <label class="bmd-label-floating required">Description</label>
+                                        @Html.TextBoxFor(model => model.Item1.Description, new { @id = "ln", @class = "form-control", required = "required", @maxlength = "25" })
+                                    </div>
+                                </div>
+                                <div class="col-md-4" style="margin-top: -5px;">
+                                    <div class="form-group  bmd-form-group">
+                                        @Html.DropDownListFor(model => model.Item1.Type, new SelectList(Model.Item2.List(), "id", "type"), "Select Type", new { @class = "form-control required", @required = "required" })
+                                    </div>
+                                </div>
+                                <div class="col-md-4" style="margin-top: -5px;">
+                                    <div class="form-group  bmd-form-group">
+                                        @Html.DropDownListFor(model => model.Item1.Product, new SelectList(Model.Item3.List(), "id", "Reference"), "Select Produit", new { @class = "form-control required", @required = "required" })
+                                    </div>
+                                </div>
+                            </div>
+
+
+                                <input type="submit" value="Enregistrer" class="btn @Session["btn"] pull-right" />
+
+                            }
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
+<script>
+    $(document).ready(function () {
+        $(".nav-item").removeClass("active");
+        $("#linkcomp").addClass("active");
+        $('#example').DataTable(
+            {
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
+                }
+            }
+        );
+    });
+
+    $("#fn,#ln,#prof").keydown(function (e) {
+        if ($.isNumeric(e.key))
+            return false;
+
+        return true;
+    });
+    $("#tel").keydown(function (e) {
+        if ($(this).val().length < 10 && $.isNumeric(e.key) || e.keyCode == 9 || e.keyCode == 46 || e.keyCode == 8 || e.keyCode == 37 || e.keyCode == 39)
+            return true;
+
+        return false;
+    });
+    $("#codep").keydown(function (e) {
+        if ($(this).val().length < 4 && $.isNumeric(e.key) || e.keyCode == 9 || e.keyCode == 46 || e.keyCode == 8 || e.keyCode == 37 || e.keyCode == 39)
+            return true;
+
+        return false;
+    });
+
+
+</script>

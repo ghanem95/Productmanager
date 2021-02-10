@@ -1,0 +1,72 @@
+﻿@model Tuple<ProductManagement.Models.Complaint, ProductManagement.Models.Complaint_type, ProductManagement.Models.Product>
+
+<script src="~/assets/js/core/jquery.min.js"></script>
+<script src="~/assets/js/core/popper.min.js"></script>
+<script src="~/assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
+<script src="~/assets/js/datatable/jquery.datatables.min.js"></script>
+<link href="~/assets/css/datatable/jquery.datatables.min.css" rel="stylesheet" />
+<link href="../assets/css/material-dashboard.css?v=2.1.2" rel="stylesheet" />
+<script src="~/assets/js/material-dashboard.js?v=2.1.2" type="text/javascript"></script>
+<script src="~/assets/js/core/bootstrap-material-design.min.js"></script>
+<link href="~/Content/required.css" rel="stylesheet" />
+
+@using (Html.BeginForm("Save", "Complaint", FormMethod.Post))
+{
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group  bmd-form-group">
+                <label class="bmd-label-floating required">Titre</label>
+                @Html.HiddenFor(model => model.Item1.Id)
+                @Html.TextBoxFor(model => model.Item1.Title, new { @id = "fn", @class = "form-control", required = "required", @type = "text", @maxlength = "25" })
+                @Html.ValidationMessageFor(model => model.Item1.Title, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group  bmd-form-group">
+                <label class="bmd-label-floating required">Description</label>
+                @Html.TextBoxFor(model => model.Item1.Description, new { @id = "ln", @class = "form-control", required = "required", @maxlength = "25" })
+            </div>
+        </div>
+        <div class="col-md-4" style="margin-top: -5px;">
+            <div class="form-group  bmd-form-group">
+                @Html.DropDownListFor(model => model.Item1.Type, new SelectList(Model.Item2.List(), "id", "type"), "Select Type", new { @class = "form-control required", @required = "required" })
+            </div>
+        </div>
+        <div class="col-md-4" style="margin-top: -5px;">
+            <div class="form-group  bmd-form-group">
+                @Html.DropDownListFor(model => model.Item1.Product, new SelectList(Model.Item3.List(), "id", "Reference"), "Select Produit", new { @class = "form-control required", @required = "required" })
+            </div>
+        </div>
+    </div>
+
+
+    <input type="submit" value="Enregistrer" class="btn @Session["btn"] pull-right" />
+
+}
+<script>
+    $(document).ready(function () {
+        if ($('#tel').val() == 0) {
+            $('#tel').val() = "";
+        }
+    });
+    $("#fn,#ln,#prof").keydown(function (e) {
+        if ($(this).val().length > 25 || $.isNumeric(e.key))
+            return false;
+
+        return true;
+    });
+    $("#tel").keydown(function (e) {
+        if ($(this).val().length < 10 && $.isNumeric(e.key) || e.keyCode == 9 || e.keyCode == 46 || e.keyCode == 8 || e.keyCode == 37 || e.keyCode == 39)
+            return true;
+
+        return false;
+    });
+    $("#codep").keydown(function (e) {
+        if ($(this).val().length < 4 && $.isNumeric(e.key) || e.keyCode == 9 || e.keyCode == 46 || e.keyCode == 8 || e.keyCode == 37 || e.keyCode == 39)
+            return true;
+
+        return false;
+    });
+
+
+</script>

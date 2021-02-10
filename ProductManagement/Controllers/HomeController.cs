@@ -75,7 +75,15 @@ namespace ProductManagement.Controllers
         {
             IList<Stat> stats;
             Stat stat = new Stat();
-            stats = stat.List();
+            stats = stat.Listproductsaled();
+            var response = new { data = stats };
+            return Json(response, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult Nbprodbytype()
+        {
+            IList<Stat> stats;
+            Stat stat = new Stat();
+            stats = stat.Nbproductbytype();
             var response = new { data = stats };
             return Json(response, JsonRequestBehavior.AllowGet);
         }

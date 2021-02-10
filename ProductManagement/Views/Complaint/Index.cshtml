@@ -1,0 +1,120 @@
+﻿@model Tuple<ProductManagement.Models.Complaint, ProductManagement.Models.Complaint_type, ProductManagement.Models.Product>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Add Client</title>
+</head>
+<body>
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12" id="List">
+                    @{
+                        Html.RenderPartial("_List");
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade bd-example-modal-sm" id="confirm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="exampleModalLabel">Voulez-vous vraiment supprimer?</h6>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-footer">
+                    <input type="button" value="Oui" class="btn @Session["btn"]" id="btnconfirm" />
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade bd-example-modal-lg" id="modaldetail" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modification client</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="detail">
+                    @{
+                        Html.RenderPartial("_Detail");
+                    }
+                </div>
+
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+<script>
+    $(document).ready(function () {
+        $(".nav-item").removeClass("active");
+        $("#linkcomp").addClass("active");
+        $('#example').DataTable(
+            {
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
+                },
+                "columnDefs": [
+                    { "width": "1%", "targets": 0 },
+                    { "width": "10%", "targets": 1 },
+                    { "width": "5%", "targets": 2 }
+                ],
+                processing: true,
+                serverSide: true,
+                searchable: true,
+                ajax: {
+                    url: '@Url.Action("Get", "Complaint")',
+                    type: 'POST',
+                    dataSrc: 'data',
+                },
+                columns: [
+                    { data: "Id" },
+                    { data: "Title" },
+                    { data: "Description" },
+                    { data: "Desctype" },
+                    { data: "Descstate" },
+                    { data: "Product" },
+                    {
+                        data: "Creation_date", mRender: function (data) {
+                            var pattern = /Date\(([^)]+)\)/;
+                            var results = pattern.exec(data);
+                            var dt = new Date(parseFloat(results[1]));
+                            var day;
+                            var mounth;
+                            if (dt.getDate() < 10) {
+                                day = "0" + dt.getDate();
+                            }
+                            else {
+                                day = dt.getDate();
+                            }
+                            if (dt.getMonth() < 9) {
+                                mounth = "0" + (dt.getMonth() + 1);
+                            }
+                            else {
+                                mounth = (dt.getMonth() + 1);
+                            }
+                            return (day) + "/" + (mounth) + "/" + dt.getFullYear();
+                        }
+                    },
+                    {
+                        data: "Id",
+                        mRender: function (data, type, full) {
+                            return '<a id="modif" href="#" onclick="Detail('+ data +')" style="font-size:13px">Modifier</a>  |  '
+                                + '<a id="modif" href="#" onclick="Delete(' + data + ')" style="font-size:13px">Supprimer</a>'
+                        }}
+
+                ]
+
+            }
+        );
+    });
+</script>

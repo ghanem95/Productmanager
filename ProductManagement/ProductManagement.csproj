@@ -125,6 +125,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\ClientController.cs" />
     <Compile Include="Controllers\CommandeController.cs" />
+    <Compile Include="Controllers\ComplaintController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
@@ -136,12 +137,15 @@
     </Compile>
     <Compile Include="Models\Client.cs" />
     <Compile Include="Models\Commande.cs" />
+    <Compile Include="Models\Complaint.cs" />
+    <Compile Include="Models\Complaint_type.cs" />
     <Compile Include="Models\Connectionstrings.cs" />
     <Compile Include="Models\Corrector.cs" />
     <Compile Include="Models\Crud.cs" />
     <Compile Include="Models\Design.cs" />
     <Compile Include="Models\Product.cs" />
     <Compile Include="Models\Stat.cs" />
+    <Compile Include="Models\Complaint_state.cs" />
     <Compile Include="Models\Type.cs" />
     <Compile Include="Models\Typeprofil.cs" />
     <Compile Include="Models\User.cs" />
@@ -419,6 +423,10 @@
     <Content Include="Views\User\AddUser.cshtml" />
     <Content Include="Views\User\_Listuser.cshtml" />
     <Content Include="Views\User\_Detailuser.cshtml" />
+    <Content Include="Views\Complaint\_Detail.cshtml" />
+    <Content Include="Views\Complaint\_List.cshtml" />
+    <Content Include="Views\Complaint\Add.cshtml" />
+    <Content Include="Views\Complaint\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

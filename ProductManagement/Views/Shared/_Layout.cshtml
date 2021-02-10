@@ -20,7 +20,7 @@
 <body>
     @{int profil = Convert.ToInt32(Session["typeprofil"]);}
     <div class="wrapper ">
-        <div class="sidebar" data-color=@Session["design"] data-background-color="white">
+        <div class="sidebar" data-color=@Session["design"] data-background-color="white" data-image="../assets/img/sidebar-1.jpg">
             <!--
         Tip 1: You can change the color of the sidebar using: data-color="purple | azure | green | orange | danger"
 
@@ -35,94 +35,110 @@
             @{
                     if (profil == 2)
                 {
-                    <div class="sidebar-wrapper">
+                        <div class="sidebar-wrapper">
 
-                        <ul class="nav">
-                            <li class="nav-item" id="linkco">
-                                <a class="nav-link" href="/Commande/Index">
-                                    <i class="material-icons">dashboard</i>
-                                    <p>Gestion des commandes</p>
-                                </a>
-                            </li>
-                        </ul>
-                        <ul class="nav">
-                            <li class="nav-item" id="linkco">
-                                <a class="nav-link" href="/Login/logout">
-                                    <i class="material-icons">logout</i>
-                                    <p>Deconnexion</p>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
+                            <ul class="nav">
+                                <li class="nav-item" id="linkco">
+                                    <a class="nav-link" href="/Commande/Index">
+                                                    <i class="material-icons">content_paste</i>
+                                        <p>Gestion des commandes</p>
+                                    </a>
+                                </li>
+                            </ul>
+                            <ul class="nav">
+                                <li class="nav-item" id="linkcomp">
+                                    <a class="nav-link" href="/Complaint/Add">
+                                                    <i class="material-icons">library_books</i>
+                                        <p>Ajout réclamation</p>
+                                    </a>
+                                </li>
+                            </ul>
+                            <ul class="nav">
+                                <li class="nav-item" id="linkco">
+                                    <a class="nav-link" href="/Login/logout">
+                                        <i class="material-icons">logout</i>
+                                        <p>Deconnexion</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
                 }
                 else
                 {
-                    <div class="sidebar-wrapper">
-                        <ul class="nav">
-                            <li class="nav-item" id="linkd">
-                                <a class="nav-link" href="/Home/Index">
-                                    <i class="material-icons">dashboard</i>
-                                    <p>Dashboard</p>
-                                </a>
-                            </li>
-                        </ul>
-                        <ul class="nav">
-                            <li class="nav-item" id="linkc">
-                                <a class="nav-link" href="/client/index">
-                                    <i class="material-icons">person</i>
-                                    <p>Gestion des client</p>
-                                </a>
-                            </li>
-                        </ul>
-                        <ul class="nav">
-                            <li class="nav-item" id="linkp">
-                                <a class="nav-link" href="/Product/index">
-                                    <i class="material-icons">store</i>
-                                    <p>Gestion des Produits</p>
-                                </a>
-                            </li>
-                        </ul>
-                        <ul class="nav">
-                            <li class="nav-item" id="linktype">
-                                <a class="nav-link" href="/Typeproduct/index">
-                                    <i class="material-icons">build</i>
-                                    <p>Type produit</p>
-                                </a>
-                            </li>
-                        </ul>
-                        <ul class="nav">
-                            <li class="nav-item" id="linktypeprofil">
-                                <a class="nav-link" href="/Typeprofil/index">
-                                    <i class="material-icons">build</i>
-                                    <p>Type profil</p>
-                                </a>
-                            </li>
-                        </ul>
-                        <ul class="nav">
-                            <li class="nav-item" id="linkuser">
-                                <a class="nav-link" href="/user/index">
-                                    <i class="material-icons">person</i>
-                                    <p>Gestion des utilisateurs</p>
-                                </a>
-                            </li>
-                        </ul>
-                        <ul class="nav">
-                            <li class="nav-item" id="linkco">
-                                <a class="nav-link" href="/Commande/Index">
-                                    <i class="material-icons">dashboard</i>
-                                    <p>Gestion des commandes</p>
-                                </a>
-                            </li>
-                        </ul>
-                        <ul class="nav">
-                            <li class="nav-item" id="linkco">
-                                <a class="nav-link" href="/Login/logout">
-                                    <i class="material-icons">logout</i>
-                                    <p>Deconnexion</p>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
+        <div class="sidebar-wrapper">
+            <ul class="nav">
+                <li class="nav-item" id="linkd">
+                    <a class="nav-link" href="/Home/Index">
+                        <i class="material-icons">dashboard</i>
+                        <p>Dashboard</p>
+                    </a>
+                </li>
+            </ul>
+            <ul class="nav">
+                <li class="nav-item" id="linkc">
+                    <a class="nav-link" href="/client/index">
+                        <i class="material-icons">person</i>
+                        <p>Gestion des client</p>
+                    </a>
+                </li>
+            </ul>
+            <ul class="nav">
+                <li class="nav-item" id="linkp">
+                    <a class="nav-link" href="/Product/index">
+                        <i class="material-icons">store</i>
+                        <p>Gestion des Produits</p>
+                    </a>
+                </li>
+            </ul>
+            <ul class="nav">
+                <li class="nav-item" id="linktype">
+                    <a class="nav-link" href="/Typeproduct/index">
+                        <i class="material-icons">build</i>
+                        <p>Type produit</p>
+                    </a>
+                </li>
+            </ul>
+            @*<ul class="nav">
+                <li class="nav-item" id="linktypeprofil">
+                    <a class="nav-link" href="/Typeprofil/index">
+                        <i class="material-icons">upload</i>
+                        <p>Type profil</p>
+                    </a>
+                </li>
+            </ul>*@
+            <ul class="nav">
+                <li class="nav-item" id="linkuser">
+                    <a class="nav-link" href="/user/index">
+                        <i class="material-icons">person</i>
+                        <p>Gestion des utilisateurs</p>
+                    </a>
+                </li>
+            </ul>
+            <ul class="nav">
+                <li class="nav-item" id="linkcomp">
+                    <a class="nav-link" href="/Complaint/Index">
+                        <i class="material-icons">library_books</i>
+                        <p>Gestion des réclamation</p>
+                    </a>
+                </li>
+            </ul>
+            <ul class="nav">
+                <li class="nav-item" id="linkco">
+                    <a class="nav-link" href="/Commande/Index">
+                        <i class="material-icons">dashboard</i>
+                        <p>Gestion des commandes</p>
+                    </a>
+                </li>
+            </ul>
+            <ul class="nav">
+                <li class="nav-item" id="linkco">
+                    <a class="nav-link" href="/Login/logout">
+                        <i class="material-icons">logout</i>
+                        <p>Deconnexion</p>
+                    </a>
+                </li>
+            </ul>
+        </div>
                 }
             }
 
@@ -148,6 +164,21 @@
                                 <a class="nav-link" href="javascript:;">
                                     <i class="material-icons">notifications</i> Notifications
                                 </a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link" href="javascript:;" id="navbarDropdownProfile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="material-icons">person</i>
+                                    <p class="d-lg-none d-md-block">
+                                        Account
+                                    </p>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownProfile">
+                                    @*<a class="dropdown-item" href="#">Profile</a>
+        <a class="dropdown-item" href="#">Settings</a>*@
+                                    <a class="dropdown-item" href="/Login/logout">Log out</a>
+                                    @*<div class="dropdown-divider"></div>
+
+                                </div>*@
                             </li>
                             <!-- your navbar here -->
                         </ul>
@@ -207,10 +238,11 @@
             <li class="header-title">Images</li>
             <li class="active">
                 <a class="img-holder switch-trigger" href="javascript:void(0)">
-                    <img src="../assets/img/sidebar-1.jpg" alt="">
+                    <img src="~/assets/img/sidebar-1.jpg" />
                 </a>
             </li>
             <li>
+                
                 <a class="img-holder switch-trigger" href="javascript:void(0)">
                     <img src="~/assets/img/sidebar-2.jpg" alt="">
                 </a>
@@ -225,7 +257,7 @@
                     <img src="../assets/img/sidebar-4.jpg" alt="">
                 </a>
             </li>
-            <li class="button-container">
+            @*<li class="button-container">
                 <a href="https://www.creative-tim.com/product/material-dashboard" target="_blank" class="btn @Session["btn"] btn-block">Free Download</a>
             </li>
             <li class="header-title">Want more components?</li>
@@ -242,10 +274,10 @@
             <li class="button-container github-star">
                 <a class="github-button" href="https://github.com/creativetimofficial/material-dashboard" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star ntkme/github-buttons on GitHub">Star</a>
             </li>
-            <li class="header-title">Thank you for 95 shares!</li>
+            <li class="header-title">Thank you for 95 shares!</li>*@
             <li class="button-container text-center">
-                <button id="twitter" class="btn btn-round btn-twitter"><i class="fa fa-twitter"></i> &middot; 45</button>
-                <button id="facebook" class="btn btn-round btn-facebook"><i class="fa fa-facebook-f"></i> &middot; 50</button>
+                <button id="twitter" class="btn btn-round btn-twitter"><i class="fa fa-linkedin"></i></button>
+                <button id="facebook" class="btn btn-round btn-facebook"><i class="fa fa-facebook-f"></i></button>
                 <br>
                 <br>
             </li>
@@ -311,6 +343,9 @@
                         $sidebar.attr('data-color', new_color);
                         $(".datadesign").removeClass().addClass("card-header").addClass("datadesign").addClass(datatable);
                         $(".btn").removeClass().addClass("btn").addClass(btn)
+                        $("#twitter").removeClass().addClass(" btn btn-round btn-twitter")
+                        $("#facebook").removeClass().addClass("btn btn-round btn-facebook")
+                       
                     }
                 },
                 error: function (result) {
