@@ -471,7 +471,7 @@ from (
 
 select clt.*, row_number() over(order by ' + @sortcolumn + ' ' + @tri + ') as [row_number] 
 
-from [User] clt) clt 
+from [User] clt where id > 1) clt 
 
 where row_number >0 and  Firstname like '+@searchval+' or Lastname like '+@searchval+'  or Adresse like '+@searchval+'
 
@@ -667,17 +667,34 @@ go
 IF EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND name = 'selectcomplaintbyid')
 DROP PROCEDURE selectcomplaintbyid
 GO
+
 create procedure selectcomplaintbyid @id int as
 
 select * from [Complaint] where id=@id
 go
+IF EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND name = 'stateproduct')
+DROP PROCEDURE stateproduct
+GO
 create procedure stateproduct as
 select count(*) as nb,t.type from product p
 inner join typeproduct t on p.type=t.id
 group by t.type
 go
+IF EXISTS (SELECT * FROM sys.objects WHERE type = 'TR' AND name = 'insertdesign')
+DROP TRIGGER insertdesign
+go
+CREATE TRIGGER insertdesign ON "user"
+AFTER INSERT
+as
+begin
+insert into design
+select max(id),'purple','card-header-primary','btn-primary' from "user"
+end;
 dbcc checkident("user",reseed,0)
 go
-insert into "user" ("login","password",typeprofil)
-values('admin','admin',1)
+insert into "user" 
+values('admin','admin',1,'','','','','','','','','','')
+go 
+insert into typeprofil values(1,'admin','admin')
+insert into typeprofil values(2,'user','user')
 
