@@ -32,7 +32,14 @@ IF EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE='BASE TABLE'
 drop table [state_complaint]
 IF EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE='BASE TABLE' AND TABLE_NAME='type_complaint') 
 drop table [type_complaint]
+IF EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE='BASE TABLE' AND TABLE_NAME='stat') 
+drop table [stat]
 go
+create table stat(
+day nvarchar(10),
+val int
+)
+
 create table complaint(
 id int,
 title nvarchar(50),
@@ -711,7 +718,7 @@ end;
 dbcc checkident("user",reseed,0)
 go
 insert into "user" 
-values('admin','admin',1,'','','','','','','','','','')
+values('admin','admin',1,'admin','','','','','','','','','')
 go 
 insert into typeprofil values(1,'admin','admin')
 insert into typeprofil values(2,'user','user')
