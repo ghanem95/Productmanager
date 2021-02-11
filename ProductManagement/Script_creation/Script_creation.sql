@@ -483,8 +483,26 @@ print @cmd
 
 exec(@cmd)
 go
+IF EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND name = 'countdatatableusers')
+DROP PROCEDURE countdatatableusers
+GO
+CREATE procedure countdatatableusers @number int,@start int, @sortcolumn nvarchar(30), @tri nvarchar(10),@searchval nvarchar(100) as
 
+DECLARE @cmd AS NVARCHAR(max)
+declare @formatdate as varchar(20)
+SET @searchVal = ''''+'%' +@searchval+'%'+''''
+set @formatdate='''dd/mm/yyyy'''
+SET @cmd = N'select count(*) as nbr
+from (
+select clt.*, row_number() over(order by ' + @sortcolumn + ' ' + @tri + ') as [row_number] 
+from [User] clt where id > 1) clt 
+where row_number >0 and  Firstname like '+@searchval+' or Lastname like '+@searchval+'  or Adresse like '+@searchval+'
+or Cite like '+@searchval+' or Countrie like  ' + @searchval +' or Codep like ' +@searchval+' or Email like '
 
++@searchval+' or Tel like '+@searchval+'or Prof like ' +@searchval+'or FORMAT(birthdate, '+ @formatdate +') like '+@searchval 
+print @cmd
+exec(@cmd)
+go
 --procédure stocké Deleteuser
 IF EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND name = 'Deleteuser')
 DROP PROCEDURE Deleteuser
