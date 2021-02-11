@@ -32,14 +32,21 @@
                         <div class="card-body">
                             @using (Html.BeginForm("Save", "Commande", FormMethod.Post))
                             {
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-group  bmd-form-group">
-                                            @Html.HiddenFor(model => model.Item1.Id)
-                                            @Html.DropDownListFor(model => model.Item1.Idclt, new SelectList(Model.Item3.List(), "id", "firstname"), "Select client *", new { @class = "form-control",@required="required" })
+                                @Html.HiddenFor(model => model.Item1.Id)
+                                if (Convert.ToInt32(Session["typeprofil"]) == 1)
+                                {
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group  bmd-form-group">
+                                                @Html.DropDownListFor(model => model.Item1.Idclt, new SelectList(Model.Item3.List(), "id", "firstname"), "Select client *", new { @class = "form-control", @required = "required" })
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                }
+
+
+
+
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group  bmd-form-group">
@@ -51,7 +58,7 @@
                                     <div class="col-md-12">
                                         <div class="form-group  bmd-form-group is-focused ">
                                             <label class="bmd-label-floating required">Quantité</label>
-                                            @Html.TextBoxFor(model => model.Item1.Qt, new { @class = "form-control", @required = "required",@type="number" })
+                                            @Html.TextBoxFor(model => model.Item1.Qt, new { @class = "form-control", @required = "required", @type = "number" })
                                         </div>
                                     </div>
                                 </div>
@@ -92,13 +99,13 @@
 </body>
 </html>
 @*<script>
-    $(document).ready(function () {
-        $('#example').DataTable(
-            {
-                "language": {
-                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
+        $(document).ready(function () {
+            $('#example').DataTable(
+                {
+                    "language": {
+                        "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
+                    }
                 }
-            }
-        );
-    });
-</script>*@
+            );
+        });
+    </script>*@

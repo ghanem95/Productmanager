@@ -48,7 +48,7 @@
                                 </div>
                                 <div class="col-md-4" style="margin-top: -5px;">
                                     <div class="form-group  bmd-form-group">
-                                        @Html.DropDownListFor(model => model.Item1.Product, new SelectList(Model.Item3.List(), "id", "Reference"), "Select Produit", new { @class = "form-control required", @required = "required" })
+                                        @Html.DropDownListFor(model => model.Item1.Product, new SelectList(Model.Item3.List(), "id", "name"), "Select Produit", new { @class = "form-control required", @required = "required" })
                                     </div>
                                 </div>
                             </div>

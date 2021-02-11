@@ -21,8 +21,8 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header datadesign @Session["datatable"]">
-                            <h4 class="card-title">Gestion des clients</h4>
-                            <p class="card-category">Ajouter un client</p>
+                            <h4 class="card-title">Gestion des Utilisateurs</h4>
+                            <p class="card-category">Ajouter utilisateur</p>
                         </div>
                         <div class="card-body">
                             @using (Html.BeginForm("Save", "User", FormMethod.Post))
@@ -131,7 +131,7 @@
 <script>
     $(document).ready(function () {
         $(".nav-item").removeClass("active");
-        $("#linkc").addClass("active");
+        $("#linkuser").addClass("active");
         $('#example').DataTable(
             {
                 "language": {

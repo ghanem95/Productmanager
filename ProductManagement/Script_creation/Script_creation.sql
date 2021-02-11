@@ -675,3 +675,9 @@ create procedure stateproduct as
 select count(*) as nb,t.type from product p
 inner join typeproduct t on p.type=t.id
 group by t.type
+go
+dbcc checkident("user",reseed,0)
+go
+insert into "user" ("login","password",typeprofil)
+values('admin','admin',1)
+

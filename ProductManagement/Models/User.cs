@@ -136,7 +136,7 @@ namespace ProductManagement.Models
                     column = column.Replace("0", "id").Replace("1", "firstname").Replace("2", "lastname").Replace("3", "birthdate")
                         .Replace("4", "Adresse").Replace("5", "cite").Replace("6", "countrie").Replace("7", "codep").Replace("8", "email")
                         .Replace("9", "tel").Replace("10", "prof");
-                    SqlCommand cmd = new SqlCommand("countdatatablecustomers", conn);
+                    SqlCommand cmd = new SqlCommand("countdatatableusers", conn);
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@number", length);
                     cmd.Parameters.AddWithValue("@start", start);

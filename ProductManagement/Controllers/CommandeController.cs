@@ -35,6 +35,10 @@ namespace ProductManagement.Controllers
         }
         public ActionResult Save([Bind(Prefix = "Item1")] Commande commande)
         {
+            if(commande.Idclt==0)
+            {
+                commande.Idclt =Convert.ToInt32(Session["user"]);
+            }
             if (commande.Id != 0)
             {
                 commande.Update();
